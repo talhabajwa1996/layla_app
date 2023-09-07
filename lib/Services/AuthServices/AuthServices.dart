@@ -24,4 +24,22 @@ class AuthServices {
       return ServerResponse.error(e.toString());
     }
   }
+
+  Future<ServerResponse<ShopifyUser>> createUserWithEmailAndPassword(
+      BuildContext context,
+      {required String email,
+        required String password}) async {
+    var controller = Provider.of<AuthController>(context, listen: false);
+    try {
+      controller.setSignupLoading(true);
+      ShopifyUser user = await shopifyAuth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      controller.setSignupLoading(false);
+      return ServerResponse.completed(user);
+    } on Exception catch (e) {
+      controller.setSignupLoading(false);
+      return ServerResponse.error(e.toString());
+    }
+  }
+
 }

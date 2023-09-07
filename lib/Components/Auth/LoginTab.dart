@@ -45,7 +45,19 @@ class _LoginTabState extends State<LoginTab> {
         child: Consumer<AuthController>(builder: (context, controller, child) {
           return Column(
             children: [
-              const SizedBox(height: 50),
+              const SizedBox(
+                height: 90,
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "LOGIN TO YOUR ACCOUNT",
+                    style: TextStyle(
+                        color: ColorConstants.textColorGrey,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16),
+                  ),
+                ),
+              ),
               CustomTextFormField(
                 hintText: 'Email',
                 controller: _emailController,
@@ -92,8 +104,9 @@ class _LoginTabState extends State<LoginTab> {
                   child: InkWell(
                       onTap: () {},
                       child: const Text("Forgot Password?",
-                          style:
-                              TextStyle(color: ColorConstants.textColorGrey, fontWeight: FontWeight.w500)))),
+                          style: TextStyle(
+                              color: ColorConstants.textColorGrey,
+                              fontWeight: FontWeight.w500)))),
               const SizedBox(height: 20),
               controller.isLoginLoading!
                   ? const AppLoader()
@@ -136,7 +149,12 @@ class _LoginTabState extends State<LoginTab> {
                   ],
                 ),
               ),
-              CustomElevatedButton.outlined(title: 'Sign up', onPressed: () {})
+              CustomElevatedButton.outlined(
+                  title: 'Sign up',
+                  onPressed: () {
+                    controller.authTabController!.animateTo(1);
+                    controller.setTabIndex(1);
+                  })
             ],
           );
         }),
