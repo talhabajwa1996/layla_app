@@ -2,7 +2,6 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:layla_app_dev/Services/AuthServices/AuthServices.dart';
 import 'package:layla_app_dev/Services/ServerResponse.dart';
-import 'package:layla_app_dev/Utils/Constants/RouteConstants.dart';
 import 'package:layla_app_dev/Widgets/Buttons/CustomElevatedButton.dart';
 import 'package:layla_app_dev/Widgets/Loaders/AppLoader.dart';
 import 'package:layla_app_dev/Widgets/Notifiers/Toast.dart';
@@ -12,6 +11,7 @@ import 'package:shopify_flutter/models/models.dart';
 import '../../Controllers/AuthController/AuthController.dart';
 import '../../Utils/Constants/AppIcons.dart';
 import '../../Utils/Constants/ColorConstants.dart';
+import '../../Utils/HelperFunctions.dart';
 
 class SignupTab extends StatefulWidget {
   const SignupTab({super.key});
@@ -60,13 +60,13 @@ class _SignupTabState extends State<SignupTab> {
               Consumer<AuthController>(builder: (context, controller, child) {
             return Column(
               children: [
-                const SizedBox(
+                 SizedBox(
                   height: 50,
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      "CREATE YOUR ACCOUNT",
-                      style: TextStyle(
+                      localizedText(context).create_your_account,
+                      style: const TextStyle(
                           color: ColorConstants.textColorGrey,
                           fontWeight: FontWeight.bold,
                           fontSize: 16),
@@ -74,7 +74,7 @@ class _SignupTabState extends State<SignupTab> {
                   ),
                 ),
                 CustomTextFormField(
-                  hintText: 'First Name',
+                  hintText: localizedText(context).first_name,
                   controller: _firstNameController,
                   focusNode: _firstNameNode,
                   onFieldSubmit: (value) =>
@@ -89,7 +89,7 @@ class _SignupTabState extends State<SignupTab> {
                 ),
                 const SizedBox(height: 15),
                 CustomTextFormField(
-                  hintText: 'Last Name',
+                  hintText: localizedText(context).last_name,
                   controller: _lastNameController,
                   focusNode: _lastNameNode,
                   onFieldSubmit: (value) =>
@@ -104,7 +104,7 @@ class _SignupTabState extends State<SignupTab> {
                 ),
                 const SizedBox(height: 15),
                 CustomTextFormField(
-                  hintText: 'Email',
+                  hintText: localizedText(context).email,
                   controller: _emailController,
                   focusNode: _emailNode,
                   onFieldSubmit: (value) =>
@@ -121,7 +121,7 @@ class _SignupTabState extends State<SignupTab> {
                 ),
                 const SizedBox(height: 15),
                 CustomTextFormField(
-                  hintText: 'Password',
+                  hintText: localizedText(context).password,
                   controller: _passwordController,
                   focusNode: _passwordNode,
                   isObscure: controller.isObscurePasswordSignup!,
@@ -141,14 +141,14 @@ class _SignupTabState extends State<SignupTab> {
                   ),
                   validator: (String? value) => (value!.isEmpty)
                       ? "Please Enter Password"
-                      : value.length < 8
-                          ? 'Password must contain at least 8 characters'
+                      : value.length < 6
+                          ? 'Password must contain at least 6 characters'
                           : null,
                   contentPadding: const EdgeInsets.symmetric(horizontal: 20),
                 ),
                 const SizedBox(height: 15),
                 CustomTextFormField(
-                  hintText: 'Confirm Password',
+                  hintText: localizedText(context).confirm_password,
                   controller: _confirmPasswordController,
                   focusNode: _confirmPasswordNode,
                   isObscure: controller.isObscureConfirmPasswordSignup!,
@@ -175,14 +175,17 @@ class _SignupTabState extends State<SignupTab> {
                 controller.isSignupLoading!
                     ? const AppLoader()
                     : CustomElevatedButton.solid(
-                        title: 'Sign up',
+                        title: localizedText(context).signup,
                         onPressed: () async {
                           if (_formKey!.currentState!.validate()) {
                             ServerResponse<ShopifyUser> response =
                                 await AuthServices()
-                                    .createUserWithEmailAndPassword(context,
-                                        email: _emailController!.text,
-                                        password: _passwordController!.text);
+                                    .createUserWithEmailAndPassword(
+                                        context,
+                                        _firstNameController!.text,
+                                        _lastNameController!.text,
+                                        _emailController!.text,
+                                        _passwordController!.text);
                             if (response.status == Status.COMPLETED) {
                               debugPrint(
                                   response.responseData!.toJson().toString());
@@ -194,22 +197,22 @@ class _SignupTabState extends State<SignupTab> {
                             }
                           }
                         }),
-                const SizedBox(
+                 SizedBox(
                   height: 50,
                   child: Row(
                     children: [
-                      Expanded(
+                   const   Expanded(
                           child: Divider(
                         color: ColorConstants.textColorGrey,
                       )),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 20),
                         child: Text(
-                          "Already have an account?",
+                          localizedText(context).already_have_an_account_ques,
                           style: TextStyle(color: ColorConstants.textColorGrey),
                         ),
                       ),
-                      Expanded(
+                  const    Expanded(
                           child: Divider(
                         color: ColorConstants.textColorGrey,
                       )),
@@ -217,7 +220,7 @@ class _SignupTabState extends State<SignupTab> {
                   ),
                 ),
                 CustomElevatedButton.outlined(
-                    title: 'Login',
+                    title: localizedText(context).login,
                     onPressed: () {
                       controller.authTabController!.animateTo(0);
                       controller.setTabIndex(0);

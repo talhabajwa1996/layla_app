@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:layla_app_dev/Services/AuthServices/AuthServices.dart';
 import 'package:layla_app_dev/Services/ServerResponse.dart';
 import 'package:layla_app_dev/Utils/Constants/RouteConstants.dart';
+import 'package:layla_app_dev/Utils/HelperFunctions.dart';
 import 'package:layla_app_dev/Widgets/Buttons/CustomElevatedButton.dart';
 import 'package:layla_app_dev/Widgets/Loaders/AppLoader.dart';
+import 'package:layla_app_dev/Widgets/Notifiers/Toast.dart';
 import 'package:layla_app_dev/Widgets/TextFields/CustomTextFormField.dart';
 import 'package:provider/provider.dart';
 import 'package:shopify_flutter/models/models.dart';
@@ -45,13 +47,13 @@ class _LoginTabState extends State<LoginTab> {
         child: Consumer<AuthController>(builder: (context, controller, child) {
           return Column(
             children: [
-              const SizedBox(
+               SizedBox(
                 height: 90,
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    "LOGIN TO YOUR ACCOUNT",
-                    style: TextStyle(
+                    localizedText(context).login_to_your_account,
+                    style: const TextStyle(
                         color: ColorConstants.textColorGrey,
                         fontWeight: FontWeight.bold,
                         fontSize: 16),
@@ -59,7 +61,7 @@ class _LoginTabState extends State<LoginTab> {
                 ),
               ),
               CustomTextFormField(
-                hintText: 'Email',
+                hintText: localizedText(context).email,
                 controller: _emailController,
                 focusNode: _emailNode,
                 onFieldSubmit: (value) =>
@@ -76,7 +78,7 @@ class _LoginTabState extends State<LoginTab> {
               ),
               const SizedBox(height: 30),
               CustomTextFormField(
-                hintText: 'Password',
+                hintText: localizedText(context).password,
                 controller: _passwordController,
                 focusNode: _passwordNode,
                 isObscure: controller.isObscurePasswordLogin!,
@@ -93,8 +95,8 @@ class _LoginTabState extends State<LoginTab> {
                 ),
                 validator: (String? value) => (value!.isEmpty)
                     ? "Please Enter Password"
-                    : value.length < 8
-                        ? 'Password must contain at least 8 characters'
+                    : value.length < 6
+                        ? 'Password must contain at least 6 characters'
                         : null,
                 contentPadding: const EdgeInsets.symmetric(horizontal: 20),
               ),
@@ -102,16 +104,17 @@ class _LoginTabState extends State<LoginTab> {
               Align(
                   alignment: Alignment.centerRight,
                   child: InkWell(
-                      onTap: () {},
-                      child: const Text("Forgot Password?",
-                          style: TextStyle(
+                      onTap: () => Navigator.of(context)
+                          .pushNamed(RouteConstants.forgetPassword),
+                      child:  Text(localizedText(context).forget_password_ques,
+                          style: const TextStyle(
                               color: ColorConstants.textColorGrey,
                               fontWeight: FontWeight.w500)))),
               const SizedBox(height: 20),
               controller.isLoginLoading!
                   ? const AppLoader()
                   : CustomElevatedButton.solid(
-                      title: 'Login',
+                      title: localizedText(context).login,
                       onPressed: () async {
                         if (_formKey!.currentState!.validate()) {
                           ServerResponse<ShopifyUser> response =
@@ -124,25 +127,27 @@ class _LoginTabState extends State<LoginTab> {
                                 response.responseData!.toJson().toString());
                             Navigator.of(context)
                                 .pushReplacementNamed(RouteConstants.home);
+                          } else if (response.status == Status.ERROR) {
+                            showToast('Incorrect Credentials');
                           }
                         }
                       }),
-              const SizedBox(
+               SizedBox(
                 height: 50,
                 child: Row(
                   children: [
-                    Expanded(
+                 const   Expanded(
                         child: Divider(
                       color: ColorConstants.textColorGrey,
                     )),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: Text(
-                        "Don't have an account yet?",
-                        style: TextStyle(color: ColorConstants.textColorGrey),
+                        localizedText(context).dont_have_an_account_yet,
+                        style: const TextStyle(color: ColorConstants.textColorGrey),
                       ),
                     ),
-                    Expanded(
+                  const  Expanded(
                         child: Divider(
                       color: ColorConstants.textColorGrey,
                     )),
@@ -150,11 +155,11 @@ class _LoginTabState extends State<LoginTab> {
                 ),
               ),
               CustomElevatedButton.outlined(
-                  title: 'Sign up',
+                  title: localizedText(context).signup,
                   onPressed: () {
                     controller.authTabController!.animateTo(1);
                     controller.setTabIndex(1);
-                  })
+                  }),
             ],
           );
         }),

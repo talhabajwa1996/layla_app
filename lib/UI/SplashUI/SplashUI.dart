@@ -18,7 +18,7 @@ class _SplashScreenUIState extends State<SplashScreenUI>
 
   void navigate() async {
     Timer(const Duration(seconds: 4), () async {
-      Navigator.of(context).pushReplacementNamed(RouteConstants.auth);
+      Navigator.of(context).pushReplacementNamed(RouteConstants.selectLanguage);
     });
   }
 

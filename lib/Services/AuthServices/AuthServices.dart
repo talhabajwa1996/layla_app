@@ -27,13 +27,18 @@ class AuthServices {
 
   Future<ServerResponse<ShopifyUser>> createUserWithEmailAndPassword(
       BuildContext context,
-      {required String email,
-        required String password}) async {
+      String firstName,
+      String lastName,
+      String email,
+      String password) async {
     var controller = Provider.of<AuthController>(context, listen: false);
     try {
       controller.setSignupLoading(true);
       ShopifyUser user = await shopifyAuth.createUserWithEmailAndPassword(
-          email: email, password: password);
+          email: email,
+          password: password,
+          firstName: firstName,
+          lastName: lastName);
       controller.setSignupLoading(false);
       return ServerResponse.completed(user);
     } on Exception catch (e) {
@@ -42,4 +47,17 @@ class AuthServices {
     }
   }
 
+  Future<ServerResponse<void>> sendPasswordResetEmail(
+      BuildContext context, String email) async {
+    var controller = Provider.of<AuthController>(context, listen: false);
+    try {
+      controller.setForgetPasswordLoading(true);
+      await shopifyAuth.sendPasswordResetEmail(email: email);
+      controller.setForgetPasswordLoading(false);
+      return ServerResponse.completed(null);
+    } on Exception catch (e) {
+      controller.setForgetPasswordLoading(false);
+      return ServerResponse.error(e.toString());
+    }
+  }
 }

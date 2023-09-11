@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:layla_app_dev/UI/AuthUI/AuthUI.dart';
+import 'package:layla_app_dev/UI/AuthUI/ForgetPasswordUI.dart';
 import 'package:layla_app_dev/UI/HomeUI/HomeUI.dart';
+import 'package:layla_app_dev/UI/SelectLangAndCurrencyUI/SelectLangAndCurrencyUI.dart';
 import 'package:layla_app_dev/UI/SplashUI/SplashUI.dart';
 import 'package:page_transition/page_transition.dart';
 import '../Utils/Constants/RouteConstants.dart';
@@ -17,6 +19,16 @@ class RouteGenerator {
       case RouteConstants.auth:
         return PageTransition(
           child: const AuthUI(),
+          type: PageTransitionType.rightToLeft,
+        );
+      case RouteConstants.forgetPassword:
+        return PageTransition(
+          child: const ForgetPasswordUI(),
+          type: PageTransitionType.rightToLeft,
+        );
+      case RouteConstants.selectLanguage:
+        return PageTransition(
+          child:  SelectLangAndCurrencyUI(),
           type: PageTransitionType.rightToLeft,
         );
       case RouteConstants.home:

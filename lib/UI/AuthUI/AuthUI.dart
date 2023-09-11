@@ -3,6 +3,7 @@ import 'package:layla_app_dev/Components/Auth/LoginTab.dart';
 import 'package:layla_app_dev/Components/Auth/SignupTab.dart';
 import 'package:layla_app_dev/Controllers/AuthController/AuthController.dart';
 import 'package:layla_app_dev/Utils/Constants/ColorConstants.dart';
+import 'package:layla_app_dev/Utils/HelperFunctions.dart';
 import 'package:layla_app_dev/Widgets/LogoAppBar.dart';
 import 'package:provider/provider.dart';
 
@@ -74,9 +75,12 @@ class _AuthUIState extends State<AuthUI> with SingleTickerProviderStateMixin {
                                         ? ColorConstants.white
                                         : ColorConstants.dullWhite,
                                     borderRadius: BorderRadius.circular(5)),
-                                child: const Center(
-                                  child: Text('LOGIN',
-                                      style: TextStyle(
+                                child: Center(
+                                  child: Text(
+                                      localizedText(context)
+                                          .login
+                                          .toUpperCase(),
+                                      style: const TextStyle(
                                           color: ColorConstants.textColorGrey,
                                           fontWeight: FontWeight.w700)),
                                 ),
@@ -91,9 +95,12 @@ class _AuthUIState extends State<AuthUI> with SingleTickerProviderStateMixin {
                                         ? ColorConstants.white
                                         : ColorConstants.dullWhite,
                                     borderRadius: BorderRadius.circular(5)),
-                                child: const Center(
-                                  child: Text('SIGN UP',
-                                      style: TextStyle(
+                                child: Center(
+                                  child: Text(
+                                      localizedText(context)
+                                          .signup
+                                          .toUpperCase(),
+                                      style: const TextStyle(
                                           color: ColorConstants.textColorGrey,
                                           fontWeight: FontWeight.w700)),
                                 ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class AuthController extends ChangeNotifier{
+class AuthController extends ChangeNotifier {
   TabController? authTabController;
   int currentTabIndex = 0;
 
@@ -9,6 +9,7 @@ class AuthController extends ChangeNotifier{
   bool? isObscureConfirmPasswordSignup;
   bool? isLoginLoading;
   bool? isSignupLoading;
+  bool? isForgetPasswordLoading;
 
   toggleObscurePasswordLogin() {
     isObscurePasswordLogin = !isObscurePasswordLogin!;
@@ -35,17 +36,23 @@ class AuthController extends ChangeNotifier{
     notifyListeners();
   }
 
-  setTabIndex(int index){
+  setForgetPasswordLoading(bool value) {
+    isForgetPasswordLoading = value;
+    notifyListeners();
+  }
+
+  setTabIndex(int index) {
     currentTabIndex = index;
     notifyListeners();
   }
 
-  initialize(TickerProvider tickerProvider){
+  initialize(TickerProvider tickerProvider) {
     isObscurePasswordLogin = true;
     isObscurePasswordSignup = true;
     isObscureConfirmPasswordSignup = true;
     isLoginLoading = false;
     isSignupLoading = false;
+    isForgetPasswordLoading = false;
     authTabController = TabController(length: 2, vsync: tickerProvider);
   }
 }
