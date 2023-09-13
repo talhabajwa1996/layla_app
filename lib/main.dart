@@ -3,17 +3,14 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:layla_app_dev/Controllers/AuthController/AuthController.dart';
 import 'package:layla_app_dev/Controllers/LocaleProvider.dart';
 import 'package:layla_app_dev/Routes/Routes.dart';
+import 'package:layla_app_dev/Services/API/api.dart';
 import 'package:layla_app_dev/Utils/Constants/ColorConstants.dart';
 import 'package:layla_app_dev/Utils/Constants/RouteConstants.dart';
 import 'package:provider/provider.dart';
-import 'package:shopify_flutter/shopify_config.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() {
-  ShopifyConfig.setConfig(
-    storefrontAccessToken: 'd968df86a2c90d332ac7a5135fe270f1',
-    storeUrl: 'layla-collection.myshopify.com',
-  );
+ GraphqlApi.config();
   runApp(const MyApp());
 }
 

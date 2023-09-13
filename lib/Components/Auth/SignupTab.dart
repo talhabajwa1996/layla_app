@@ -1,13 +1,13 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:layla_app_dev/Models/AuthModels/CreateAccountResponseModel.dart';
 import 'package:layla_app_dev/Services/AuthServices/AuthServices.dart';
-import 'package:layla_app_dev/Services/ServerResponse.dart';
+import 'package:layla_app_dev/Services/API/ServerResponse.dart';
 import 'package:layla_app_dev/Widgets/Buttons/CustomElevatedButton.dart';
 import 'package:layla_app_dev/Widgets/Loaders/AppLoader.dart';
 import 'package:layla_app_dev/Widgets/Notifiers/Toast.dart';
 import 'package:layla_app_dev/Widgets/TextFields/CustomTextFormField.dart';
 import 'package:provider/provider.dart';
-import 'package:shopify_flutter/models/models.dart';
 import '../../Controllers/AuthController/AuthController.dart';
 import '../../Utils/Constants/AppIcons.dart';
 import '../../Utils/Constants/ColorConstants.dart';
@@ -178,7 +178,7 @@ class _SignupTabState extends State<SignupTab> {
                         title: localizedText(context).signup,
                         onPressed: () async {
                           if (_formKey!.currentState!.validate()) {
-                            ServerResponse<ShopifyUser> response =
+                            ServerResponse<CreateAccountResponseModel> response =
                                 await AuthServices()
                                     .createUserWithEmailAndPassword(
                                         context,
@@ -187,13 +187,11 @@ class _SignupTabState extends State<SignupTab> {
                                         _emailController!.text,
                                         _passwordController!.text);
                             if (response.status == Status.COMPLETED) {
-                              debugPrint(
-                                  response.responseData!.toJson().toString());
+                              showToast('Account created Successfully');
                               controller.authTabController!.animateTo(0);
                               controller.setTabIndex(0);
-                              showToast('Account created Successfully');
                             } else if (response.status == Status.ERROR) {
-                              showToast('Error creating the account');
+                              showToast(response.message!);
                             }
                           }
                         }),

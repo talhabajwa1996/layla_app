@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../Utils/Constants/ImageConstants.dart';
 
 class AppLogo extends StatelessWidget {

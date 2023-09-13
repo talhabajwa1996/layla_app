@@ -1,13 +1,14 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:layla_app_dev/Controllers/AuthController/AuthController.dart';
+import 'package:layla_app_dev/Models/AuthModels/SendPasswordResetResponseModel.dart';
 import 'package:layla_app_dev/Utils/Constants/ColorConstants.dart';
 import 'package:layla_app_dev/Widgets/LogoAppBar.dart';
 import 'package:layla_app_dev/Widgets/Notifiers/Toast.dart';
 import 'package:provider/provider.dart';
 
 import '../../Services/AuthServices/AuthServices.dart';
-import '../../Services/ServerResponse.dart';
+import '../../Services/API/ServerResponse.dart';
 import '../../Utils/HelperFunctions.dart';
 import '../../Widgets/Buttons/CustomElevatedButton.dart';
 import '../../Widgets/Loaders/AppLoader.dart';
@@ -122,15 +123,14 @@ class _ForgetPasswordUIState extends State<ForgetPasswordUI>
                                     title: localizedText(context).submit,
                                     onPressed: () async {
                                       if (_formKey!.currentState!.validate()) {
-                                        ServerResponse<void> response =
-                                            await AuthServices()
-                                                .sendPasswordResetEmail(context,
-                                                    _emailController!.text);
-                                        if (response.status ==
-                                            Status.COMPLETED) {
-                                          showToast(
-                                              'A password reset link is sent to your email');
-                                          Navigator.pop(context);
+                                        ServerResponse<SendPasswordResetResponseModel> response =
+                                        await AuthServices().sendPasswordResetEmail(
+                                            context, _emailController!.text);
+                                        if (response.status == Status.COMPLETED) {
+                                          showToast('A password reset link has been sent to your email');
+                                          Navigator.of(context).pop();
+                                        } else if (response.status == Status.ERROR) {
+                                          showToast(response.message!);
                                         }
                                       }
                                     }),
