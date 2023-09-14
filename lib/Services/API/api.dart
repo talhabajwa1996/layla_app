@@ -27,6 +27,10 @@ class GraphqlApi {
           document: gql(query),
           variables: variables);
       final QueryResult response = await _graphQLClient!.query(options);
+      debugPrint("Response: ${response.data}");
+      if(response.hasException){
+        throw Exception(response.exception!.graphqlErrors.first.message);
+      }
       return response.data;
     } on SocketException {
       throw FetchDataException("No Internet Available");
@@ -39,7 +43,6 @@ class GraphqlApi {
         document: gql(mutation),
         variables: variables,
       );
-      debugPrint("Request: $variables");
       final QueryResult response = await _graphQLClient!.mutate(options);
       debugPrint("Response: ${response.data}");
       if(response.hasException){

@@ -4,5 +4,5 @@ class RouteConstants {
   static const String forgetPassword = '/forget_password';
   static const String selectLanguage = '/select_language';
   static const String error = '/error';
-  static const String home = '/home';
+  static const String bottomBar = '/bottom_bar_ui';
 }

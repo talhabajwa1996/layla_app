@@ -125,7 +125,7 @@ class _LoginTabState extends State<LoginTab> {
                           if (response.status == Status.COMPLETED) {
                             showToast('Login Successful');
                             Navigator.of(context)
-                                .pushReplacementNamed(RouteConstants.home);
+                                .pushReplacementNamed(RouteConstants.bottomBar);
                           } else if (response.status == Status.ERROR) {
                             showToast(response.message!);
                           }

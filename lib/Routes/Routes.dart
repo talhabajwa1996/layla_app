@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:layla_app_dev/UI/AuthUI/AuthUI.dart';
 import 'package:layla_app_dev/UI/AuthUI/ForgetPasswordUI.dart';
-import 'package:layla_app_dev/UI/HomeUI/HomeUI.dart';
+import 'package:layla_app_dev/UI/BottomNavigationBarUI/BottomNavigationBarUI.dart';
 import 'package:layla_app_dev/UI/SelectLangAndCurrencyUI/SelectLangAndCurrencyUI.dart';
 import 'package:layla_app_dev/UI/SplashUI/SplashUI.dart';
 import 'package:page_transition/page_transition.dart';
@@ -28,16 +28,16 @@ class RouteGenerator {
         );
       case RouteConstants.selectLanguage:
         return PageTransition(
-          child:  SelectLangAndCurrencyUI(),
+          child: const SelectLangAndCurrencyUI(),
           type: PageTransitionType.rightToLeft,
         );
-      case RouteConstants.home:
+      case RouteConstants.bottomBar:
         return PageTransition(
-          child: const HomeUI(),
+          child: const BottomNavigationBarUI(),
           type: PageTransitionType.rightToLeft,
         );
       default:
-      // If there is no such named route in the switch statement
+        // If there is no such named route in the switch statement
         return _errorRoute();
     }
   }
