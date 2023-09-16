@@ -6,7 +6,7 @@ import 'package:layla_app_dev/Utils/Constants/ImageConstants.dart';
 import 'package:layla_app_dev/Utils/Constants/RouteConstants.dart';
 import 'package:layla_app_dev/Utils/HelperFunctions.dart';
 import 'package:layla_app_dev/Widgets/BottomSheets/CustomBottomSheet.dart';
-import 'package:layla_app_dev/Widgets/LogoAppBar.dart';
+import 'package:layla_app_dev/Widgets/Appbars/LogoAppBar.dart';
 import 'package:provider/provider.dart';
 import '../../Utils/Constants/ColorConstants.dart';
 import '../../Widgets/Buttons/CustomElevatedButton.dart';
@@ -118,7 +118,7 @@ class SelectLangAndCurrencyUI extends StatelessWidget {
                   child: CustomElevatedButton.solid(
                       title: localizedText(context).go_shopping.toUpperCase(),
                       onPressed: () => Navigator.pushReplacementNamed(
-                          context, RouteConstants.auth)),
+                          context, RouteConstants.bottomBar)),
                 )
               ],
             ),

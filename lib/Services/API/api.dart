@@ -10,7 +10,7 @@ class GraphqlApi {
       '$storeUrl/api/$storefrontApiVersion/graphql.json';
 
   static void config() {
-   _graphQLClient = GraphQLClient(
+    _graphQLClient = GraphQLClient(
       link: HttpLink(
         apiUrl,
         defaultHeaders: {
@@ -21,14 +21,14 @@ class GraphqlApi {
     );
   }
 
-  static Future<dynamic> query(String query, Map<String, dynamic> variables) async {
+  static Future<dynamic> query(String query,
+      {Map<String, dynamic>? variables}) async {
     try {
-      final WatchQueryOptions options = WatchQueryOptions(
-          document: gql(query),
-          variables: variables);
+      final WatchQueryOptions options =
+          WatchQueryOptions(document: gql(query), variables: variables ?? {});
       final QueryResult response = await _graphQLClient!.query(options);
       debugPrint("Response: ${response.data}");
-      if(response.hasException){
+      if (response.hasException) {
         throw Exception(response.exception!.graphqlErrors.first.message);
       }
       return response.data;
@@ -37,7 +37,8 @@ class GraphqlApi {
     }
   }
 
-  static Future<dynamic> mutation(String mutation, Map<String, dynamic> variables) async {
+  static Future<dynamic> mutation(
+      String mutation, Map<String, dynamic> variables) async {
     try {
       final MutationOptions options = MutationOptions(
         document: gql(mutation),
@@ -45,13 +46,13 @@ class GraphqlApi {
       );
       final QueryResult response = await _graphQLClient!.mutate(options);
       debugPrint("Response: ${response.data}");
-      if(response.hasException){
+      if (response.hasException) {
         throw Exception(response.exception!.graphqlErrors.first.message);
       }
       return response.data;
     } on SocketException {
       throw FetchDataException("No Internet Available");
-    } catch(e){
+    } catch (e) {
       throw Exception(e);
     }
   }

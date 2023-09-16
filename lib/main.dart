@@ -3,6 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:layla_app_dev/Controllers/AuthController/AuthController.dart';
 import 'package:layla_app_dev/Controllers/HomeController/HomeController.dart';
 import 'package:layla_app_dev/Controllers/LocaleProvider.dart';
+import 'package:layla_app_dev/Controllers/MenuCollectionsController/MenuCollectionsController.dart';
 import 'package:layla_app_dev/Routes/Routes.dart';
 import 'package:layla_app_dev/Services/API/api.dart';
 import 'package:layla_app_dev/Utils/Constants/ColorConstants.dart';
@@ -27,6 +28,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider<BottomBarController>(
           create: (context) => BottomBarController(),
+        ),
+        ChangeNotifierProvider<MenuCollectionsController>(
+          create: (context) => MenuCollectionsController(),
         ),
       ],
       child: ChangeNotifierProvider(

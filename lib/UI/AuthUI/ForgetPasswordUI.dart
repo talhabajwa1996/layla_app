@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:layla_app_dev/Controllers/AuthController/AuthController.dart';
 import 'package:layla_app_dev/Models/AuthModels/SendPasswordResetResponseModel.dart';
 import 'package:layla_app_dev/Utils/Constants/ColorConstants.dart';
-import 'package:layla_app_dev/Widgets/LogoAppBar.dart';
+import 'package:layla_app_dev/Widgets/Appbars/LogoAppBar.dart';
 import 'package:layla_app_dev/Widgets/Notifiers/Toast.dart';
 import 'package:provider/provider.dart';
 

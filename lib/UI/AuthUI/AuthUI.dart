@@ -4,7 +4,7 @@ import 'package:layla_app_dev/Components/Auth/SignupTab.dart';
 import 'package:layla_app_dev/Controllers/AuthController/AuthController.dart';
 import 'package:layla_app_dev/Utils/Constants/ColorConstants.dart';
 import 'package:layla_app_dev/Utils/HelperFunctions.dart';
-import 'package:layla_app_dev/Widgets/LogoAppBar.dart';
+import 'package:layla_app_dev/Widgets/Appbars/LogoAppBar.dart';
 import 'package:provider/provider.dart';
 
 class AuthUI extends StatefulWidget {

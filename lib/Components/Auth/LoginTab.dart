@@ -124,8 +124,8 @@ class _LoginTabState extends State<LoginTab> {
                                   password: _passwordController!.text);
                           if (response.status == Status.COMPLETED) {
                             showToast('Login Successful');
-                            Navigator.of(context)
-                                .pushReplacementNamed(RouteConstants.bottomBar);
+                            // Navigator.of(context)
+                            //     .pushReplacementNamed(RouteConstants.bottomBar);
                           } else if (response.status == Status.ERROR) {
                             showToast(response.message!);
                           }

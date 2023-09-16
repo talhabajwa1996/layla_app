@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:layla_app_dev/UI/DevUI/DevUI.dart';
+import 'package:layla_app_dev/UI/AuthUI/ForgetPasswordUI.dart';
+import '../UI/AuthUI/AuthUI.dart';
 import '../Utils/Constants/RouteConstants.dart';
 
 class ProfileNavigator extends StatelessWidget {
@@ -19,7 +20,9 @@ class ProfileNavigator extends StatelessWidget {
             builder: (BuildContext context) {
               switch (settings.name) {
                 case RouteConstants.initialRoute:
-                  return const DevUI();
+                  return const AuthUI();
+                case RouteConstants.forgetPassword:
+                  return const ForgetPasswordUI();
                 default:
                   return _errorRoute();
               }

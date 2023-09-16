@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../Utils/Constants/ColorConstants.dart';
-import 'Images/AppLogo.dart';
+import '../../Utils/Constants/ColorConstants.dart';
+import '../Images/AppLogo.dart';
 
 PreferredSizeWidget logoAppBar(
         {bool? centerLogo,

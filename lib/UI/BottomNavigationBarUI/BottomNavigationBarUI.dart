@@ -90,9 +90,10 @@ class _BottomNavigationBarUIState extends State<BottomNavigationBarUI>
               indicatorPadding: const EdgeInsets.symmetric(horizontal: 5.0),
               labelColor: ColorConstants.primaryColor,
               unselectedLabelColor: ColorConstants.black,
+              splashBorderRadius: BorderRadius.circular(100),
               unselectedLabelStyle: const TextStyle(
                   color: ColorConstants.white, fontWeight: FontWeight.w500),
-              labelStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+              labelStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
             ),
           ),
         ),

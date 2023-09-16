@@ -11,4 +11,7 @@ class AppIcons {
   static const IconData favourite = FontAwesomeIcons.heart;
   static const IconData profile = FontAwesomeIcons.user;
   static const IconData cart = FontAwesomeIcons.bagShopping;
+  static const IconData search = Icons.search;
+  static const IconData camera = Icons.camera_alt_outlined;
+  static const IconData scan = Icons.document_scanner_sharp;
 }
