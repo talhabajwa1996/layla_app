@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:layla_app_dev/Models/MenuCollectionsModel/MenuCollectionsResponseModel.dart';
 import 'package:layla_app_dev/UI/MenuCategoriesUI/SubCategoriesUI.dart';
 import '../UI/MenuCategoriesUI/MenuMainCategoriesUI.dart';
 import '../Utils/Constants/RouteConstants.dart';
@@ -23,7 +22,7 @@ class MenuNavigator extends StatelessWidget {
                 case RouteConstants.initialRoute:
                   return const MenuMainCategoriesUI();
                 case RouteConstants.menuSubCategories:
-                  return MenuSubCategoriesUI(args as List<SubCollectionItems>);
+                  return MenuSubCategoriesUI(args as Map<String, dynamic>);
                 default:
                   return _errorRoute();
               }

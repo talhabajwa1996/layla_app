@@ -22,11 +22,18 @@ class MenuMainCategories extends StatelessWidget {
                           .menu!.items![index].subCollectionItems!.isNotEmpty) {
                         Navigator.of(context).pushNamed(
                             RouteConstants.menuSubCategories,
-                            arguments: menuCollectionsController
-                                .menuCollectionsResponse!
-                                .menu!
-                                .items![index]
-                                .subCollectionItems);
+                            arguments: {
+                              'title': menuCollectionsController
+                                  .menuCollectionsResponse!
+                                  .menu!
+                                  .items![index]
+                                  .title,
+                              'items': menuCollectionsController
+                                  .menuCollectionsResponse!
+                                  .menu!
+                                  .items![index]
+                                  .subCollectionItems
+                            });
                       }
                     })));
   }

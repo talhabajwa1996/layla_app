@@ -5,7 +5,7 @@ import 'package:layla_app_dev/Routes/FavouritesNavigator.dart';
 import 'package:layla_app_dev/Routes/HomeNavigator.dart';
 import 'package:layla_app_dev/Routes/MenuNavigator.dart';
 import 'package:layla_app_dev/Routes/ProfileNavigator.dart';
-import 'package:layla_app_dev/Utils/Constants/AppIcons.dart';
+import 'package:layla_app_dev/Utils/Constants/ImageConstants.dart';
 import 'package:provider/provider.dart';
 import '../../Utils/Constants/ColorConstants.dart';
 
@@ -77,14 +77,14 @@ class _BottomNavigationBarUIState extends State<BottomNavigationBarUI>
                 ),
               ),
               tabs: [
-                buildTab(AppIcons.home),
-                buildTab(AppIcons.favourite),
+                buildTab(ImageConstants.home),
+                buildTab(ImageConstants.favourite),
                 const Text(
                   'MENU',
                   style: TextStyle(fontSize: 16),
                 ),
-                buildTab(AppIcons.profile),
-                buildTab(AppIcons.cart),
+                buildTab(ImageConstants.profile),
+                buildTab(ImageConstants.cart),
               ],
               labelPadding: const EdgeInsets.all(0.0),
               indicatorPadding: const EdgeInsets.symmetric(horizontal: 5.0),
@@ -93,7 +93,8 @@ class _BottomNavigationBarUIState extends State<BottomNavigationBarUI>
               splashBorderRadius: BorderRadius.circular(100),
               unselectedLabelStyle: const TextStyle(
                   color: ColorConstants.white, fontWeight: FontWeight.w500),
-              labelStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+              labelStyle:
+                  const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
             ),
           ),
         ),
@@ -101,7 +102,7 @@ class _BottomNavigationBarUIState extends State<BottomNavigationBarUI>
     });
   }
 
-  Widget buildTab(IconData icon) {
-    return Icon(icon);
+  Widget buildTab(String imagePath) {
+    return Image.asset(imagePath, height: 30);
   }
 }
