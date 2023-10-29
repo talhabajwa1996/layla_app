@@ -21,11 +21,16 @@ class GraphqlApi {
     );
   }
 
-  static Future<dynamic> query(String query, Map<String, dynamic> variables) async {
+  static Future<dynamic> query(String query, {Map<String, dynamic>? variables}) async {
+    AuthLink link = AuthLink(getToken: (){
+      return customerAccessToken;
+    });
+    _graphQLClient = GraphQLClient(link: link, cache: GraphQLCache());
+    
     try {
       final WatchQueryOptions options = WatchQueryOptions(
           document: gql(query),
-          variables: variables);
+          variables: variables ?? {});
       final QueryResult response = await _graphQLClient!.query(options);
       return response.data;
     } on SocketException {

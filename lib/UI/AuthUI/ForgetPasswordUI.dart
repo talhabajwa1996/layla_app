@@ -2,8 +2,9 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:layla_app_dev/Controllers/AuthController/AuthController.dart';
 import 'package:layla_app_dev/Models/AuthModels/SendPasswordResetResponseModel.dart';
-import 'package:layla_app_dev/Utils/Constants/ColorConstants.dart';
-import 'package:layla_app_dev/Widgets/LogoAppBar.dart';
+import 'package:layla_app_dev/AppTheme/ColorConstants.dart';
+import 'package:layla_app_dev/Services/ShopifyServices/ShopifyServices.dart';
+import 'package:layla_app_dev/Widgets/CustomAppBar/LogoAppBar.dart';
 import 'package:layla_app_dev/Widgets/Notifiers/Toast.dart';
 import 'package:provider/provider.dart';
 
@@ -78,7 +79,7 @@ class _ForgetPasswordUIState extends State<ForgetPasswordUI>
                               padding: const EdgeInsets.symmetric(vertical: 20),
                               child: Text(
                                 localizedText(context)
-                                    .forget_password
+                                    !.forget_password
                                     .toUpperCase(),
                                 style: const TextStyle(
                                     color: ColorConstants.textColorGrey,
@@ -92,7 +93,7 @@ class _ForgetPasswordUIState extends State<ForgetPasswordUI>
                                 alignment: Alignment.centerLeft,
                                 child: Text(
                                   localizedText(context)
-                                      .please_enter_email_will_send_password_reset,
+                                      !.please_enter_email_will_send_password_reset,
                                   style: const TextStyle(
                                       color: ColorConstants.textColorGrey,
                                       fontWeight: FontWeight.bold,
@@ -101,7 +102,7 @@ class _ForgetPasswordUIState extends State<ForgetPasswordUI>
                               ),
                             ),
                             CustomTextFormField(
-                              hintText: localizedText(context).email,
+                              hintText: localizedText(context)?.email,
                               controller: _emailController,
                               focusNode: _emailNode,
                               inputType: TextInputType.emailAddress,
@@ -120,18 +121,18 @@ class _ForgetPasswordUIState extends State<ForgetPasswordUI>
                             authController.isForgetPasswordLoading!
                                 ? const AppLoader()
                                 : CustomElevatedButton.solid(
-                                    title: localizedText(context).submit,
+                                    title: localizedText(context)?.submit,
                                     onPressed: () async {
                                       if (_formKey!.currentState!.validate()) {
-                                        ServerResponse<SendPasswordResetResponseModel> response =
-                                        await AuthServices().sendPasswordResetEmail(
-                                            context, _emailController!.text);
-                                        if (response.status == Status.COMPLETED) {
+                                        authController.setForgetPasswordLoading(true);
+                                        ShopifyService().shopifyAuth.sendPasswordResetEmail(email: _emailController!.text).then((value){
                                           showToast('A password reset link has been sent to your email');
                                           Navigator.of(context).pop();
-                                        } else if (response.status == Status.ERROR) {
-                                          showToast(response.message!);
-                                        }
+                                          authController.setForgetPasswordLoading(false);
+                                        }, onError: (error){
+                                          showToast('Something went wrong');
+                                          authController.setForgetPasswordLoading(false);
+                                        });
                                       }
                                     }),
                           ],

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-import '../../Utils/Constants/ColorConstants.dart';
+import '../../AppTheme/ColorConstants.dart';
 
 class AppLoader extends StatelessWidget {
   final double size;

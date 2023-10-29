@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class AuthController extends ChangeNotifier {
   TabController? authTabController;
   int currentTabIndex = 0;
+  bool isUserLoggedIn = false;
 
   bool? isObscurePasswordLogin;
   bool? isObscurePasswordSignup;
@@ -10,6 +11,11 @@ class AuthController extends ChangeNotifier {
   bool? isLoginLoading;
   bool? isSignupLoading;
   bool? isForgetPasswordLoading;
+
+  set setUserStatus(value){
+    isUserLoggedIn = value;
+    notifyListeners();
+  }
 
   toggleObscurePasswordLogin() {
     isObscurePasswordLogin = !isObscurePasswordLogin!;

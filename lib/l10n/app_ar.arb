@@ -20,6 +20,19 @@
   "language": "لغة",
   "currency": "عملة",
   "welcome_to_layla": "مرحبا بكم في ليلى",
-  "select_language": "اختار اللغة",
-  "select_currency": "اختر العملة"
+  "select_your_preferred_language": "اختر لغتك المفضلة",
+  "select_your_currency": "اختر العملة الخاصة بك",
+  "next": "التالي",
+  "allow_app_tracking": "السماح بتتبع التطبيق",
+  "allow_app_tracking_description": "اختر \"السماح بالتتبع\" على الشاشة التالية للحصول على تجربة تسوق مخصصة.",
+  "personalised_offers_and_exclusive_promotions": "احصل على العروض الشخصية والعروض الترويجية الحصرية",
+  "personalised_product_recommendation": "احصل على العروض الشخصية والعروض الترويجية الحصرية",
+  "privacy_policy": "سياسة الخصوصية",
+  "settings": "إعدادات",
+  "my_account": "حسابي",
+  "notifications": "إشعارات",
+  "favorites": "المفضلة",
+  "my_orders": "طلباتي",
+  "signout": "خروج",
+  "delete": "يمسح"
 }

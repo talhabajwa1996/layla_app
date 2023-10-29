@@ -1,6 +1,13 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import '../../Utils/Constants/ColorConstants.dart';
+import 'package:layla_app_dev/Controllers/AuthController/AuthController.dart';
+import 'package:layla_app_dev/Controllers/LocaleProvider.dart';
+import 'package:layla_app_dev/Services/SharedPreferenceService/SharedPreferencesService.dart';
+import 'package:layla_app_dev/Utils/Constants/KeysConstants.dart';
+import 'package:layla_app_dev/Utils/HelperFunctions.dart';
+import 'package:provider/provider.dart';
+import '../../AppTheme/ColorConstants.dart';
+import '../../Services/ShopifyServices/ShopifyServices.dart';
 import '../../Utils/Constants/RouteConstants.dart';
 import '../../Widgets/Images/AppLogo.dart';
 
@@ -17,8 +24,12 @@ class _SplashScreenUIState extends State<SplashScreenUI>
   AnimationController? _iconAnimationController;
 
   void navigate() async {
+    getDataFromLocalStorage();
+    ShopifyService().getCurrentUserDetails();
     Timer(const Duration(seconds: 4), () async {
-      Navigator.of(context).pushReplacementNamed(RouteConstants.selectLanguage);
+      await HelperFunctions().checkFirstRun() ?
+      Navigator.of(context).pushReplacementNamed(RouteConstants.selectLanguage)
+          : Navigator.of(context).pushReplacementNamed(RouteConstants.home);
     });
   }
 
@@ -57,5 +68,31 @@ class _SplashScreenUIState extends State<SplashScreenUI>
         ),
       ),
     );
+  }
+
+  getDataFromLocalStorage() async {
+    LocaleProvider localeProvider = Provider.of<LocaleProvider>(context, listen: false);
+    AuthController authController = Provider.of<AuthController>(context, listen: false);
+    var code = await SharedPreferencesService().getString(KeysConstants.defaultLanguage);
+    print("Country Code:: $code");
+    if(code == "en"){
+      localeProvider.setLocale(const Locale('en'));
+    }else if(code == "ar"){
+      localeProvider.setLocale(const Locale('ar'));
+    }
+
+    var currency = await SharedPreferencesService().getString(KeysConstants.defaultCurrency);
+    print("Currency:: $currency");
+    if(currency!.isNotEmpty){
+      localeProvider.setCurrency(currency);
+    }
+
+    var userLoggedInStatus = await SharedPreferencesService().getString(KeysConstants.isUserLoggedIn);
+    print("Is User Logged in:: $userLoggedInStatus");
+    if(userLoggedInStatus == "true"){
+      authController.setUserStatus = true;
+    }else if(userLoggedInStatus == "false"){
+      authController.setUserStatus = false;
+    }
   }
 }

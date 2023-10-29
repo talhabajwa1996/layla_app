@@ -47,5 +47,13 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSUserTrackingUsageDescription</key>
+    <string>Your data will be used to offer you a personalised shopping experience.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>This app listens for speech on the device microphone on your request.</string>
+    <key>NSSpeechRecognitionUsageDescription</key>
+    <string>This app recognizes words as you speak them and displays them. </string>
+    <key>NSCameraUsageDescription</key>
+    <string>Camera permission is required for barcode scanning.</string>
 </dict>
 </plist>

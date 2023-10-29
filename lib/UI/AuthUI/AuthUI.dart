@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:layla_app_dev/Components/Auth/LoginTab.dart';
 import 'package:layla_app_dev/Components/Auth/SignupTab.dart';
 import 'package:layla_app_dev/Controllers/AuthController/AuthController.dart';
-import 'package:layla_app_dev/Utils/Constants/ColorConstants.dart';
+import 'package:layla_app_dev/AppTheme/ColorConstants.dart';
 import 'package:layla_app_dev/Utils/HelperFunctions.dart';
-import 'package:layla_app_dev/Widgets/LogoAppBar.dart';
+import 'package:layla_app_dev/Widgets/CustomAppBar/LogoAppBar.dart';
 import 'package:provider/provider.dart';
+
+import '../../Controllers/DashboardController/dashboardController.dart';
 
 class AuthUI extends StatefulWidget {
   const AuthUI({super.key});
@@ -24,7 +27,13 @@ class _AuthUIState extends State<AuthUI> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: logoAppBar(),
+      appBar: logoAppBar(
+        showBackButton: true,
+        onBackTap: (){
+          Provider.of<DashboardController>(context, listen: false).setTabIndex = 0;
+          Navigator.of(context).pop();
+        }
+      ),
       body: SingleChildScrollView(
         child: Builder(builder: (context) {
           return SizedBox(
@@ -33,7 +42,7 @@ class _AuthUIState extends State<AuthUI> with SingleTickerProviderStateMixin {
             child: Stack(
               children: [
                 Container(
-                  height: 120,
+                  height: 120.sp,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
@@ -50,8 +59,8 @@ class _AuthUIState extends State<AuthUI> with SingleTickerProviderStateMixin {
                   return Card(
                     color: ColorConstants.white,
                     surfaceTintColor: Colors.transparent,
-                    margin: const EdgeInsets.only(
-                        left: 20, right: 20, top: 60, bottom: 50),
+                    margin: EdgeInsets.only(
+                        left: 20.w, right: 20.w, top: 60.sp, bottom: 50.sp),
                     child: Theme(
                       data: ThemeData(
                         highlightColor: Colors.transparent,
@@ -78,7 +87,7 @@ class _AuthUIState extends State<AuthUI> with SingleTickerProviderStateMixin {
                                 child: Center(
                                   child: Text(
                                       localizedText(context)
-                                          .login
+                                          !.login
                                           .toUpperCase(),
                                       style: const TextStyle(
                                           color: ColorConstants.textColorGrey,
@@ -98,7 +107,7 @@ class _AuthUIState extends State<AuthUI> with SingleTickerProviderStateMixin {
                                 child: Center(
                                   child: Text(
                                       localizedText(context)
-                                          .signup
+                                          !.signup
                                           .toUpperCase(),
                                       style: const TextStyle(
                                           color: ColorConstants.textColorGrey,

@@ -20,6 +20,19 @@
   "language": "Language",
   "currency": "Currency",
   "welcome_to_layla": "Welcome to Layla",
-  "select_language": "Select Language",
-  "select_currency": "Select Currency"
+  "select_your_preferred_language": "Select your preferred language",
+  "select_your_currency": "Select your Currency",
+  "next": "Next",
+  "allow_app_tracking": "allow app tracking",
+  "allow_app_tracking_description": "choose 'allow tracking' on the next screen for a personalised shopping experience.",
+  "personalised_offers_and_exclusive_promotions": "get personalised offers and exclusive promotions",
+  "personalised_product_recommendation": "الحصول على توصية المنتج شخصية",
+  "privacy_policy": "Privacy Policy",
+  "settings": "Settings",
+  "my_account": "My Account",
+  "notifications": "Notifications",
+  "favorites": "Favorites",
+  "my_orders": "My Orders",
+  "signout": "Signout",
+  "delete": "Delete"
 }

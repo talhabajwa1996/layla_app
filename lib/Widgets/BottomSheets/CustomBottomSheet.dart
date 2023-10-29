@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../Utils/Constants/ColorConstants.dart';
+import '../../AppTheme/ColorConstants.dart';
 import '../../Utils/HelperFunctions.dart';
 import '../Buttons/CustomElevatedButton.dart';
 
@@ -50,7 +50,7 @@ Future<dynamic> customBottomSheet(BuildContext context,
                 padding:
                     const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
                 child: CustomElevatedButton.solid(
-                    title: localizedText(context).submit,
+                    title: localizedText(context)?.submit,
                     onPressed: () => Navigator.pop(context)),
               )
             ],
