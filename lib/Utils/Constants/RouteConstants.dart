@@ -9,4 +9,5 @@ class RouteConstants {
   static const String settings = '/settings';
   static const String subCategories = '/subCategories';
   static const String products = '/products';
+  static const String articles = '/articles';
 }

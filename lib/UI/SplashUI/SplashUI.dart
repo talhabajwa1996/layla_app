@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:layla_app_dev/Controllers/AuthController/AuthController.dart';
+import 'package:layla_app_dev/Controllers/FavoriteController/FavoriteController.dart';
 import 'package:layla_app_dev/Controllers/LocaleProvider.dart';
 import 'package:layla_app_dev/Services/SharedPreferenceService/SharedPreferencesService.dart';
 import 'package:layla_app_dev/Utils/Constants/KeysConstants.dart';
@@ -26,6 +27,7 @@ class _SplashScreenUIState extends State<SplashScreenUI>
   void navigate() async {
     getDataFromLocalStorage();
     ShopifyService().getCurrentUserDetails();
+    Provider.of<FavoriteController>(context, listen: false).initializeFavoriteController();
     Timer(const Duration(seconds: 4), () async {
       await HelperFunctions().checkFirstRun() ?
       Navigator.of(context).pushReplacementNamed(RouteConstants.selectLanguage)
@@ -41,7 +43,7 @@ class _SplashScreenUIState extends State<SplashScreenUI>
       parent: _iconAnimationController!,
       curve: Curves.easeOutBack,
     );
-    _iconAnimation!.addListener(() => this.setState(() {}));
+    _iconAnimation!.addListener(() => setState(() {}));
     _iconAnimationController!.forward();
     navigate();
     super.initState();
@@ -94,5 +96,12 @@ class _SplashScreenUIState extends State<SplashScreenUI>
     }else if(userLoggedInStatus == "false"){
       authController.setUserStatus = false;
     }
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _iconAnimationController?.dispose();
+    super.dispose();
   }
 }

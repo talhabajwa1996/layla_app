@@ -28,7 +28,11 @@ class CustomOutlineButton extends StatelessWidget {
       this.borderColor,
       this.fontSize,
       this.fontColor,
-      this.textColorOpacity = 1, this.buttonIcon, this.buttonIconColor, this.buttonIconSize, this.buttonColor});
+      this.textColorOpacity = 1,
+      this.buttonIcon,
+      this.buttonIconColor,
+      this.buttonIconSize,
+      this.buttonColor});
 
   @override
   Widget build(BuildContext context) {
@@ -41,67 +45,62 @@ class CustomOutlineButton extends StatelessWidget {
       padding: EdgeInsets.zero,
       alignment: Alignment.center,
       child: Center(
-        child: buttonIcon == null ? ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            primary: buttonColor,
-            side: BorderSide(color: borderColor!),
-            elevation: 0,
-            alignment: Alignment.center,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.r)),
-            minimumSize: Size(width ?? double.infinity, height ?? 40.h),
-          ),
-          onPressed: onPressed ?? () {},
-          child: Padding(
-            padding: kIsWeb
-                ? isMobile
-                    ? EdgeInsets.only(top: 3)
-                    : EdgeInsets.zero
-                : EdgeInsets.zero,
-            child: Text(
-              title!,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  height: 1.25,
-                  color: fontColor,
-                  fontSize: fontSize ?? 14.sp,
-                  fontWeight: FontWeight.w600),
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
-            ),
-          ),
-        )
-            : ElevatedButton.icon(style: ElevatedButton.styleFrom(
-          primary: buttonColor,
-          side: BorderSide(color: borderColor!),
-          elevation: 0,
-          alignment: Alignment.center,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.r)),
-          minimumSize: Size(width ?? double.infinity, height ?? 40.h),
-        ),
-          onPressed: onPressed ?? () {},
-          icon: Icon(
-            buttonIcon,
-            color: buttonIconColor,
-            size: buttonIconSize,
-          ),
-          label: Padding(
-            padding: kIsWeb
-                ? isMobile
-                ? EdgeInsets.only(top: 3)
-                : EdgeInsets.zero
-                : EdgeInsets.zero,
-            child: Text(
-              title!,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  height: 1.25,
-                  color: fontColor,
-                  fontSize: fontSize ?? 14.sp,
-                  fontWeight: FontWeight.w600),
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
-            ),
-          ),),
+        child: buttonIcon == null
+            ? ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: buttonColor,
+                  side: BorderSide(color: borderColor!),
+                  elevation: 0,
+                  alignment: Alignment.center,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.r)),
+                  minimumSize: Size(width ?? double.infinity, height ?? 40.h),
+                ),
+                onPressed: onPressed ?? () {},
+                child: Padding(
+                  padding: kIsWeb
+                      ? isMobile
+                          ? EdgeInsets.only(top: 3)
+                          : EdgeInsets.zero
+                      : EdgeInsets.zero,
+                  child: Text(
+                    title!,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(height: 1.25, color: fontColor, fontSize: fontSize ?? 14.sp, fontWeight: FontWeight.w600),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
+                ),
+              )
+            : ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  primary: buttonColor,
+                  side: BorderSide(color: borderColor!),
+                  elevation: 0,
+                  alignment: Alignment.center,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.r)),
+                  minimumSize: Size(width ?? double.infinity, height ?? 40.h),
+                ),
+                onPressed: onPressed ?? () {},
+                icon: Icon(
+                  buttonIcon,
+                  color: buttonIconColor,
+                  size: buttonIconSize,
+                ),
+                label: Padding(
+                  padding: kIsWeb
+                      ? isMobile
+                          ? EdgeInsets.only(top: 3)
+                          : EdgeInsets.zero
+                      : EdgeInsets.zero,
+                  child: Text(
+                    title!,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(height: 1.25, color: fontColor, fontSize: fontSize ?? 14.sp, fontWeight: FontWeight.w600),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
+                ),
+              ),
       ),
     );
   }

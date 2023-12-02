@@ -5,7 +5,9 @@ class ColorConstants {
   ///App Theme Colors
   static const primaryColor = Color(0xffC48490);
   static const secondaryColor = Color(0xffE9CDD0);
+  static const secondary1Color = Color(0xff66435A);
   static const textColorGrey = Color(0xff25282A);
+  static const baseColor = Color.fromRGBO(250, 249, 247, 1);
 
   /// Material colors
   static const Color transparent = Colors.transparent;

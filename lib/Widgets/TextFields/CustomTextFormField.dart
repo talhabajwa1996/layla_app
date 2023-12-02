@@ -86,8 +86,8 @@ class CustomTextFormField extends StatelessWidget {
               labelStyle: const TextStyle(
                   color: ColorConstants.textColorGrey, fontSize: 25.0),
               hintStyle: hintStyle ??
-                  const TextStyle(
-                      color: ColorConstants.textColorGrey,
+                  TextStyle(
+                      color: ColorConstants.textColorGrey.withOpacity(0.5),
                       fontSize: 16,
                       fontWeight: FontWeight.w300),
               border: OutlineInputBorder(

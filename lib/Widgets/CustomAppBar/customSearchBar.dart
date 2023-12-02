@@ -13,10 +13,12 @@ import 'package:layla_app_dev/Utils/Globals.dart';
 import 'package:layla_app_dev/Utils/HelperFunctions.dart';
 import 'package:layla_app_dev/Widgets/Buttons/customBackButton.dart';
 import 'package:provider/provider.dart';
+import 'package:shopify_flutter/enums/src/sort_key_product.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_recognition_error.dart';
 import '../../AppTheme/ColorConstants.dart';
+import '../../Utils/Constants/ImageConstants.dart';
 import '../../Utils/Constants/RouteConstants.dart';
 import '../Buttons/CustomElevatedButton.dart';
 
@@ -125,7 +127,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
               height: 32.sp,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(50.r),
-                  border: Border.all(color: ColorConstants.textColorGrey.withOpacity(0.3))),
+                  border: Border.all(color: ColorConstants.textColorGrey.withOpacity(0.2))),
               child: Center(
                 child: TextField(
                   onTap: () {
@@ -134,9 +136,8 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
                   },
                   controller: searchbarProvider.searchController,
                   onSubmitted: (value) {
-                    setState(() {
-                      searchbarProvider.searchController.text = value;
-                    });
+                    searchbarProvider.searchController.text = value;
+                    searchbarProvider.searchAndFetchProducts();
                   },
                   style: TextStyle(
                     color: Colors.black,
@@ -152,7 +153,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
                         child: Icon(
                           CupertinoIcons.search,
                           color: ColorConstants.textColorGrey.withOpacity(0.3),
-                          size: 20.sp,
+                          size: 15.sp,
                         ),
                       ),
                       hintStyle: TextStyle(color: ColorConstants.textColorGrey.withOpacity(0.3), fontSize: 14.sp, height: 1.4),
@@ -216,20 +217,20 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
                         width: 32.sp,
                         height: 32.sp,
                         decoration: BoxDecoration(
-                            color: ColorConstants.secondaryColor.withOpacity(0.5), borderRadius: BorderRadius.circular(10.r)),
+                            color: ColorConstants.secondaryColor, borderRadius: BorderRadius.circular(10.r)),
                         child: Center(
                             child: authController.isUserLoggedIn
                                 ? Text(
-                                    HelperFunctions().getInitials(shopifyUser!.firstName!),
+                                    HelperFunctions().getInitials(shopifyUser?.firstName ?? ""),
                                     style: TextStyle(
                                         fontSize: FontSizes.smallText,
                                         fontWeight: FontWeight.w900,
                                         color: ColorConstants.primaryColor),
                                   )
-                                : Icon(
-                                    CupertinoIcons.person,
-                                    color: ColorConstants.textColorGrey.withOpacity(0.8),
-                                  )),
+                                : Padding(
+                                  padding: const EdgeInsets.all(3),
+                                  child: Image.asset(ImageConstants.userIcon),
+                                )),
                       ),
                     )
                   ],

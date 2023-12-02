@@ -14,7 +14,7 @@ class SharedPreferencesService {
 
   Future<void> setJsonString(String key, Map<String, dynamic> value) async {
     SharedPreferences prefs = await _prefs;
-    if (value != null && value.isNotEmpty) {
+    if (value.isNotEmpty) {
       prefs.setString(key, jsonEncode(value));
     }
   }

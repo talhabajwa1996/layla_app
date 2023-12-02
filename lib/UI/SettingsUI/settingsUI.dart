@@ -6,12 +6,16 @@ import 'package:layla_app_dev/AppTheme/ColorConstants.dart';
 import 'package:layla_app_dev/AppTheme/fontSizes.dart';
 import 'package:layla_app_dev/Controllers/DashboardController/dashboardController.dart';
 import 'package:layla_app_dev/Services/ShopifyServices/ShopifyServices.dart';
+import 'package:layla_app_dev/UI/FavoritesUI/favorites.dart';
 import 'package:layla_app_dev/Widgets/Buttons/OutlinedButton.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../Utils/Globals.dart';
 import '../../Utils/HelperFunctions.dart';
 import '../../Widgets/CustomAppBar/LogoAppBar.dart';
+import '../CustomerServicesUI/contactUsUI.dart';
+import '../HelpUI/helpUI.dart';
 
 class SettingsUI extends StatefulWidget {
   const SettingsUI({super.key});
@@ -105,7 +109,11 @@ class _SettingsUIState extends State<SettingsUI> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 settingsCard(localizedText(context)!.notifications, CupertinoIcons.bell),
-                settingsCard(localizedText(context)!.favorites, CupertinoIcons.heart),
+                settingsCard(localizedText(context)!.favorites, CupertinoIcons.heart, onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (_) {
+                    return Favorites();
+                  }));
+                }),
                 settingsCard("Discounts", CupertinoIcons.tag),
                 settingsCard("Elvis", CupertinoIcons.sparkles),
               ],
@@ -123,8 +131,12 @@ class _SettingsUIState extends State<SettingsUI> {
           settingsListTile("My Wallet", CupertinoIcons.money_dollar),
           settingsListTile("My Saved Cards", CupertinoIcons.creditcard),
           settingsListTile("My Gift Cards", CupertinoIcons.gift_alt),
-          settingsListTile("Help", CupertinoIcons.question_circle),
-          settingsListTile(localizedText(context)!.signout, Icons.logout_rounded, onTap: (){
+          settingsListTile("Help", CupertinoIcons.question_circle, onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (_) {
+              return HelpUI();
+            }));
+          }),
+          settingsListTile(localizedText(context)!.signout, Icons.logout_rounded, onTap: () {
             ShopifyService().signOutUser(context);
           }),
           SizedBox(
@@ -137,7 +149,8 @@ class _SettingsUIState extends State<SettingsUI> {
               children: [
                 Text(
                   "Support",
-                  style: TextStyle(fontSize: FontSizes.normalText1, color: ColorConstants.textColorGrey, fontWeight: FontWeight.w600),
+                  style: TextStyle(
+                      fontSize: FontSizes.normalText1, color: ColorConstants.textColorGrey, fontWeight: FontWeight.w600),
                 ),
                 SizedBox(
                   height: 10.sp,
@@ -152,6 +165,14 @@ class _SettingsUIState extends State<SettingsUI> {
                   buttonColor: ColorConstants.green.withOpacity(0.05),
                   buttonIcon: FontAwesomeIcons.whatsapp,
                   buttonIconColor: ColorConstants.green.withOpacity(0.8),
+                  onPressed: () async {
+                    Uri whatsapp = Uri.parse("https://wa.me/+96556586099");
+                    if (await launchUrl(whatsapp)) {
+                    //dialer opened
+                    } else {
+                    //dailer is not opened
+                    }
+                  },
                 ),
                 SizedBox(
                   height: 10.sp,
@@ -166,6 +187,11 @@ class _SettingsUIState extends State<SettingsUI> {
                   buttonColor: ColorConstants.primaryColor.withOpacity(0.03),
                   buttonIcon: CupertinoIcons.doc_text,
                   buttonIconColor: ColorConstants.primaryColor.withOpacity(0.8),
+                  onPressed: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (_) {
+                      return ContactUsUI();
+                    }));
+                  },
                 )
               ],
             ),

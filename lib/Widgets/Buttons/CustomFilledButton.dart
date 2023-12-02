@@ -46,7 +46,7 @@ class CustomFilledButton extends StatelessWidget {
         padding: EdgeInsets.zero,
         decoration: BoxDecoration(
             color: btnColor,
-            borderRadius: BorderRadius.all(Radius.circular(btnRadius ?? 30)),
+            borderRadius: BorderRadius.all(Radius.circular(btnRadius ?? 5.r)),
        boxShadow: showShadow ? [
          BoxShadow(
            color: ColorConstants.textColorGrey.withOpacity(0.1),
@@ -63,7 +63,7 @@ class CustomFilledButton extends StatelessWidget {
                   primary: btnColor ?? ColorConstants.transparent,
                   side: BorderSide(color: borderColor ?? ColorConstants.transparent),
                   elevation: 0,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(btnRadius ?? 30)),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(btnRadius ?? 5.r)),
                   minimumSize: Size(width ?? double.infinity, height ?? 40.h),
                 ),
                 onPressed: onPressed ?? () {},

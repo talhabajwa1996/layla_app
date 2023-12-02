@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:layla_app_dev/Models/MenuModels/MenuCollectionsResponseModel.dart';
 import 'package:layla_app_dev/UI/MenuUI/CategoriesUI.dart';
-import 'package:shopify_flutter/enums/src/sort_key_collection.dart';
-import 'package:shopify_flutter/models/src/collection/collection.dart';
-
 import '../../Services/ShopifyServices/Queries/collectionAndSubCollection.dart';
 import '../../Services/ShopifyServices/ShopifyServices.dart';
 import '../../Widgets/Loaders/AppLoader.dart';

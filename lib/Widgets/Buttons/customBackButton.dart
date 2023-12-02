@@ -17,19 +17,13 @@ class _CustomBackButtonState extends State<CustomBackButton> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: widget.onTap,
-      child: Container(
-        width: 32.sp,
-        height: 32.sp,
-        decoration: BoxDecoration(
-            color: ColorConstants.secondaryColor.withOpacity(0.5), borderRadius: BorderRadius.circular(10.r)),
-        child: Center(
-            child: Padding(
-              padding: EdgeInsetsDirectional.only(end: 3.w),
-              child: Icon(
-                CupertinoIcons.back,
-                color: ColorConstants.textColorGrey.withOpacity(0.8),
-              ),
-            )),
+      child: Padding(
+        padding: EdgeInsetsDirectional.only(end: 3.w),
+        child: Icon(
+          CupertinoIcons.back,
+          color: ColorConstants.textColorGrey,
+          size: 22.sp,
+        ),
       ),
     );
   }
