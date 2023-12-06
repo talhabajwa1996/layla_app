@@ -28,26 +28,34 @@ class _FavoritesState extends State<Favorites> {
     future = ShopifyService().shopifyStore.getProductsByIds(favoriteController!.favoriteItems);
   }
 
+  Future<void> _handleRefresh() async {
+    future = ShopifyService().shopifyStore.getProductsByIds(favoriteController!.favoriteItems);
+    await Future.delayed(const Duration(milliseconds: 1000));
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: logoAppBar(
-          showBackButton: true,
-          onBackTap: () {
-            Navigator.of(context).pop();
-          }),
-      body: FutureBuilder(
-          future: future,
-          builder: (context, AsyncSnapshot<List<Product>?> snapshot){
-            if(!snapshot.hasData){
-              return AppLoader();
-            }else{
-              var productsList = snapshot.data;
-              return FavoritesUI(
-                productsList: productsList
-              );
-            }
-          }),
+    return RefreshIndicator(
+      onRefresh: _handleRefresh,
+      child: Scaffold(
+        appBar: logoAppBar(
+            showBackButton: true,
+            onBackTap: () {
+              Navigator.of(context).pop();
+            }),
+        body: FutureBuilder(
+            future: future,
+            builder: (context, AsyncSnapshot<List<Product>?> snapshot) {
+              if (!snapshot.hasData) {
+                return const AppLoader();
+              } else {
+                Future.delayed(Duration.zero, () {
+                  favoriteController?.fetchFavoriteProducts(snapshot.data?.toList());
+                });
+                return FavoritesUI();
+              }
+            }),
+      ),
     );
   }
 }
