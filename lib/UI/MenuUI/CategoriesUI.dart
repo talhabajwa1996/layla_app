@@ -38,7 +38,10 @@ class _CategoriesUIState extends State<CategoriesUI> {
                       Navigator.pushNamed(context, RouteConstants.subCategories,
                           arguments: {'title': collectionItem.title, 'items': collectionItem.subCollectionItems});
                     } else {
-                      Navigator.pushNamed(context, RouteConstants.products, arguments: {"handle": collectionItem.url});
+                      Navigator.pushNamed(context, RouteConstants.products, arguments: {
+                        "handle": collectionItem.url,
+                        'title': collectionItem.title,
+                      });
                     }
                   },
                   child: Container(

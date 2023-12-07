@@ -62,7 +62,7 @@ class _ProductDetailUIState extends State<ProductDetailUI> {
                 alignment: Alignment.bottomCenter,
                 children: [
                   CustomCarousel(
-                      height: size.height * 0.6,
+                      height: size.height * 0.7,
                       carouselController: carouselController,
                       autoPlay: false,
                       enableInfiniteScroll: false,
@@ -77,7 +77,7 @@ class _ProductDetailUIState extends State<ProductDetailUI> {
                           ? List.generate(widget.productDetailData!.images.length, (index) {
                               var shopifyProductImage = widget.productDetailData!.images;
                               return appNetworkImage(
-                                  shopifyProductImage[index].originalSrc, size.width, double.infinity, BoxFit.contain);
+                                  shopifyProductImage[index].originalSrc, size.width, double.infinity, BoxFit.cover);
                             })
                           : [
                               const SizedBox(

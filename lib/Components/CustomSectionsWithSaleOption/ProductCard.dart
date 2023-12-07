@@ -75,7 +75,7 @@ class _ProductCardState extends State<ProductCard> {
                           });
                         },
                         carouselItems: List.generate(widget.images!.length,
-                            (index) => appNetworkImage(widget.images?[index], widget.width, widget.height, BoxFit.fill)))
+                            (index) => appNetworkImage(widget.images?[index], double.infinity, double.infinity, BoxFit.fill)))
                     : SizedBox(
                   child: AppLogo(),
                 ),

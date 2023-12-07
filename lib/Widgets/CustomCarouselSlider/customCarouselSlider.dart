@@ -29,12 +29,10 @@ class CustomCarousel extends StatelessWidget {
         carouselController: carouselController,
         options: CarouselOptions(
             height: height ?? 150,
-            viewportFraction: viewPortFraction ?? 0.9,
+            viewportFraction: viewPortFraction ?? 1.2,
             initialPage: initialPage ?? 0,
             onPageChanged: onPageChanged,
             enableInfiniteScroll: enableInfiniteScroll ?? true,
-
-
             autoPlayInterval: autoPlayInterval!,
             padEnds: false,
             autoPlay: autoPlay ?? false),
