@@ -43,7 +43,7 @@ class RouteGenerator {
         );
       case RouteConstants.home:
         return PageTransition(
-          child: const HomeUI(),
+          child:  HomeUI(),
           type: PageTransitionType.rightToLeft,
         );
       case RouteConstants.settings:

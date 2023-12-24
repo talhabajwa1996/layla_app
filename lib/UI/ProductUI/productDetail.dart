@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:layla_app_dev/Services/ShopifyServices/ShopifyServices.dart';
 import 'package:layla_app_dev/UI/ProductUI/productDetailUI.dart';
-import 'package:layla_app_dev/Widgets/Buttons/customBackButton.dart';
 import 'package:shopify_flutter/models/src/product/product.dart';
 
-import '../../AppTheme/fontSizes.dart';
 import '../../Widgets/Loaders/AppLoader.dart';
 
 class ProductDetail extends StatefulWidget {
@@ -40,7 +37,7 @@ class _ProductDetailState extends State<ProductDetail> {
                 return const AppLoader();
               } else {
                 return ProductDetailUI(
-                  productDetailData: snapshot.data?.first,
+                  productDetailDataInitial: snapshot.data?.first,
                 );
               }
             }));

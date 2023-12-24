@@ -6,4 +6,6 @@ class ImageConstants {
   static const homeIcon = 'assets/images/homeIcon.png';
   static const searchIcon = 'assets/images/searchIcon.png';
   static const userIcon = 'assets/images/userIcon.png';
+  static const String errorImage = 'assets/images/error.png';
+  static const String emptyList = 'assets/images/empty_list.png';
 }

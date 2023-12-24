@@ -23,7 +23,7 @@ class ShopifyService {
         adminAccessToken: adminAccessToken);
   }
 
-  getCurrentUserDetails() async {
+  Future<void> getCurrentUserDetails() async {
     await shopifyAuth.currentUser().then((value) async {
       if (value != null) {
         shopifyUser = value;
