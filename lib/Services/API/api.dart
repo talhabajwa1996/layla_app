@@ -24,8 +24,10 @@ class GraphqlApi {
   static Future<dynamic> query(String query,
       {Map<String, dynamic>? variables}) async {
     try {
-      final WatchQueryOptions options =
-      WatchQueryOptions(document: gql(query), variables: variables ?? {});
+      final WatchQueryOptions options = WatchQueryOptions(
+          document: gql(query),
+          variables: variables ?? {},
+          fetchPolicy: FetchPolicy.noCache);
       final QueryResult response = await _graphQLClient!.query(options);
       debugPrint("Response: ${response.data}");
       if (response.hasException) {
@@ -41,9 +43,9 @@ class GraphqlApi {
       String mutation, Map<String, dynamic> variables) async {
     try {
       final MutationOptions options = MutationOptions(
-        document: gql(mutation),
-        variables: variables,
-      );
+          document: gql(mutation),
+          variables: variables,
+          fetchPolicy: FetchPolicy.noCache);
       print(options.variables.toString());
       final QueryResult response = await _graphQLClient!.mutate(options);
       debugPrint("Response: ${response.data}");

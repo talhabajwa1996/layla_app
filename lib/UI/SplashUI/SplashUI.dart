@@ -11,6 +11,7 @@ import '../../AppTheme/ColorConstants.dart';
 import '../../Services/API/api.dart';
 import '../../Services/ShopifyServices/ShopifyServices.dart';
 import '../../Utils/Constants/RouteConstants.dart';
+import '../../Utils/Globals.dart';
 import '../../Widgets/Images/AppLogo.dart';
 
 class SplashScreenUI extends StatefulWidget {
@@ -28,6 +29,7 @@ class _SplashScreenUIState extends State<SplashScreenUI>
   void navigate() async {
     getDataFromLocalStorage();
     ShopifyService().getCurrentUserDetails();
+    cartId = await SharedPreferencesService().getString('cart_id');
     Provider.of<FavoriteController>(context, listen: false).initializeFavoriteController();
     Timer(const Duration(seconds: 4), () async {
       await HelperFunctions().checkFirstRun() ?

@@ -21,7 +21,7 @@ class Cart {
   String? createdAt;
   String? updatedAt;
   Lines? lines;
-  Cost? cost;
+  TotalCost? cost;
 
   Cart({this.id, this.createdAt, this.updatedAt, this.lines, this.cost});
 
@@ -30,7 +30,7 @@ class Cart {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     lines = json['lines'] != null ? new Lines.fromJson(json['lines']) : null;
-    cost = json['cost'] != null ? new Cost.fromJson(json['cost']) : null;
+    cost = json['cost'] != null ? new TotalCost.fromJson(json['cost']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -74,13 +74,15 @@ class Lines {
 class Nodes {
   String? id;
   int? quantity;
+  Cost? cost;
   Merchandise? merchandise;
 
-  Nodes({this.id, this.quantity, this.merchandise});
+  Nodes({this.id, this.quantity, this.cost, this.merchandise});
 
   Nodes.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     quantity = json['quantity'];
+    cost = json['cost'] != null ? new Cost.fromJson(json['cost']) : null;
     merchandise = json['merchandise'] != null
         ? new Merchandise.fromJson(json['merchandise'])
         : null;
@@ -90,9 +92,51 @@ class Nodes {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['quantity'] = this.quantity;
+    if (this.cost != null) {
+      data['cost'] = this.cost!.toJson();
+    }
     if (this.merchandise != null) {
       data['merchandise'] = this.merchandise!.toJson();
     }
+    return data;
+  }
+}
+
+class Cost {
+  TotalAmount? totalAmount;
+
+  Cost({this.totalAmount});
+
+  Cost.fromJson(Map<String, dynamic> json) {
+    totalAmount = json['totalAmount'] != null
+        ? new TotalAmount.fromJson(json['totalAmount'])
+        : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.totalAmount != null) {
+      data['totalAmount'] = this.totalAmount!.toJson();
+    }
+    return data;
+  }
+}
+
+class TotalAmount {
+  String? amount;
+  String? currencyCode;
+
+  TotalAmount({this.amount, this.currencyCode});
+
+  TotalAmount.fromJson(Map<String, dynamic> json) {
+    amount = json['amount'];
+    currencyCode = json['currencyCode'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['amount'] = this.amount;
+    data['currencyCode'] = this.currencyCode;
     return data;
   }
 }
@@ -101,7 +145,7 @@ class Merchandise {
   String? id;
   String? title;
   Product? product;
-  Price? price;
+  TotalAmount? price;
   Image? image;
   List<SelectedOptions>? selectedOptions;
 
@@ -118,7 +162,8 @@ class Merchandise {
     title = json['title'];
     product =
     json['product'] != null ? new Product.fromJson(json['product']) : null;
-    price = json['price'] != null ? new Price.fromJson(json['price']) : null;
+    price =
+    json['price'] != null ? new TotalAmount.fromJson(json['price']) : null;
     image = json['image'] != null ? new Image.fromJson(json['image']) : null;
     if (json['selectedOptions'] != null) {
       selectedOptions = <SelectedOptions>[];
@@ -171,25 +216,6 @@ class Product {
   }
 }
 
-class Price {
-  String? amount;
-  String? currencyCode;
-
-  Price({this.amount, this.currencyCode});
-
-  Price.fromJson(Map<String, dynamic> json) {
-    amount = json['amount'];
-    currencyCode = json['currencyCode'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['amount'] = this.amount;
-    data['currencyCode'] = this.currencyCode;
-    return data;
-  }
-}
-
 class Image {
   String? url;
 
@@ -225,31 +251,27 @@ class SelectedOptions {
   }
 }
 
-class Cost {
-  Price? totalAmount;
-  Price? subtotalAmount;
-  Price? totalTaxAmount;
-  Price? totalDutyAmount;
+class TotalCost {
+  TotalAmount? totalAmount;
+  TotalAmount? subtotalAmount;
+  TotalAmount? totalTaxAmount;
+  TotalAmount? totalDutyAmount;
 
-  Cost(
+  TotalCost(
       {this.totalAmount,
         this.subtotalAmount,
         this.totalTaxAmount,
         this.totalDutyAmount});
 
-  Cost.fromJson(Map<String, dynamic> json) {
+  TotalCost.fromJson(Map<String, dynamic> json) {
     totalAmount = json['totalAmount'] != null
-        ? new Price.fromJson(json['totalAmount'])
+        ? new TotalAmount.fromJson(json['totalAmount'])
         : null;
     subtotalAmount = json['subtotalAmount'] != null
-        ? new Price.fromJson(json['subtotalAmount'])
+        ? new TotalAmount.fromJson(json['subtotalAmount'])
         : null;
-    totalTaxAmount = json['totalTaxAmount'] != null
-        ? new Price.fromJson(json['totalTaxAmount'])
-        : null;
-    totalDutyAmount = json['totalDutyAmount'] != null
-        ? new Price.fromJson(json['totalDutyAmount'])
-        : null;
+    totalTaxAmount = json['totalTaxAmount'];
+    totalDutyAmount = json['totalDutyAmount'];
   }
 
   Map<String, dynamic> toJson() {
@@ -260,12 +282,8 @@ class Cost {
     if (this.subtotalAmount != null) {
       data['subtotalAmount'] = this.subtotalAmount!.toJson();
     }
-    if (this.totalTaxAmount != null) {
-      data['totalTaxAmount'] = this.totalTaxAmount!.toJson();
-    }
-    if (this.totalDutyAmount != null) {
-      data['totalDutyAmount'] = this.totalDutyAmount!.toJson();
-    }
+    data['totalTaxAmount'] = this.totalTaxAmount;
+    data['totalDutyAmount'] = this.totalDutyAmount;
     return data;
   }
 }

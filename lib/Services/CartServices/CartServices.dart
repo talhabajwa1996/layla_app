@@ -6,9 +6,14 @@ import 'package:layla_app_dev/Models/CartModels/CreateCartAndAddItemRequestModel
 import 'package:layla_app_dev/Models/CartModels/CreateCartAndAddItemResponseModel.dart';
 import 'package:layla_app_dev/Models/CartModels/RetrieveCartRequestModel.dart';
 import 'package:layla_app_dev/Models/CartModels/RetrieveCartResponseModel.dart';
+import 'package:layla_app_dev/Models/CartModels/UpdateCartLinesRequestModel.dart';
+import 'package:layla_app_dev/Models/CartModels/UpdateCartLinesResponseModel.dart';
 import 'package:layla_app_dev/Services/API/QueriesAndMutations/RetrieveCartQuery.dart';
+import 'package:layla_app_dev/Services/API/QueriesAndMutations/UpdateCartLineMutation.dart';
 import 'package:layla_app_dev/Services/SharedPreferenceService/SharedPreferencesService.dart';
+import 'package:layla_app_dev/Widgets/Loaders/AppLoader.dart';
 import 'package:provider/provider.dart';
+import '../../Utils/Globals.dart';
 import '../API/QueriesAndMutations/AddItemToCartMutation.dart';
 import '../API/QueriesAndMutations/CreateCartAndAddItemMutation.dart';
 import '../API/ServerResponse.dart';
@@ -29,6 +34,7 @@ class CartServices {
         await SharedPreferencesService()
             .setString('cart_id', responseModel.cartCreate!.cart!.id);
         await SharedPreferencesService().setInt('cart_items_count', 1);
+        cartId = responseModel.cartCreate!.cart!.id;
         if (responseModel.cartCreate!.userErrors!.isNotEmpty) {
           return ServerResponse.error(
               responseModel.cartCreate!.userErrors!.first.message);
@@ -48,7 +54,6 @@ class CartServices {
   Future<ServerResponse<AddItemToCartResponseModel>> addItemToCart(
       BuildContext context, String merchandiseId) async {
     try {
-      String? cartId = await SharedPreferencesService().getString('cart_id');
       AddItemToCartRequestModel _requestVariables = AddItemToCartRequestModel(
           cartId: cartId,
           lines: [
@@ -79,29 +84,54 @@ class CartServices {
     }
   }
 
+  Future<ServerResponse<UpdateCartLinesResponseModel>> updateCartLine(
+      BuildContext context,
+      String merchandiseId,
+      String lineId,
+      int quantity) async {
+    try {
+      showDialog(
+          context: context,
+          barrierColor: Colors.white.withOpacity(0.6),
+          builder: (context) => const AppLoader(size: 30));
+      UpdateCartLinesRequestModel _requestVariables =
+          UpdateCartLinesRequestModel(
+              cartId: cartId,
+              lines: [LinesUpdate(id: lineId, quantity: quantity)]);
+      Map<String, dynamic> response = await GraphqlApi.mutation(
+          updateCartLineMutation, _requestVariables.toJson());
+      UpdateCartLinesResponseModel responseModel =
+          UpdateCartLinesResponseModel.fromJson(response);
+      if (responseModel.cartLinesUpdate!.userErrors!.isNotEmpty) {
+        print(responseModel.cartLinesUpdate!.userErrors!.first
+            .toJson()
+            .toString());
+        Navigator.pop(context);
+        return ServerResponse.error(
+            responseModel.cartLinesUpdate!.userErrors!.first.message);
+      } else {
+        await retrieveCart(context);
+
+        Navigator.pop(context);
+        return ServerResponse.completed(responseModel);
+      }
+    } on Exception catch (e) {
+      Navigator.pop(context);
+      return ServerResponse.error(e.toString());
+    }
+  }
+
   Future<ServerResponse<RetrieveCartResponseModel>> retrieveCart(
       BuildContext context) async {
     try {
-      String? cartId = await SharedPreferencesService().getString('cart_id');
       RetrieveCartRequestModel _requestVariables =
           RetrieveCartRequestModel(cartId: cartId);
       Map<String, dynamic> response = await GraphqlApi.query(retrieveCartQuery,
           variables: _requestVariables.toJson());
-      print("RESPONSE LENGTH:    +++++++   " + response['cart']['lines']['nodes'].length.toString());
       RetrieveCartResponseModel responseModel =
           RetrieveCartResponseModel.fromJson(response);
-      print("MODEL ITEMS:      +++++++  " +
-          responseModel.cart!.lines!.nodes!.length.toString());
       Provider.of<CartController>(context, listen: false)
           .setRetrieveCartResponse(responseModel);
-      print("ITEMS:        +++++++++   " +
-          Provider.of<CartController>(context, listen: false)
-              .retrieveCartResponse!
-              .cart!
-              .lines!
-              .nodes!
-              .length
-              .toString());
       return ServerResponse.completed(responseModel);
     } on Exception catch (e) {
       return ServerResponse.error(e.toString());

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:layla_app_dev/Utils/Constants/AppIcons.dart';
 import 'package:layla_app_dev/Widgets/Images/NetworkImage.dart';
 
 class CartItemCard extends StatelessWidget {
@@ -29,11 +30,11 @@ class CartItemCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.symmetric(vertical: 20),
       child: InkWell(
         onTap: onTap,
         child: SizedBox(
-          height: 100,
+          height: 150,
           child: Row(
             children: [
               appNetworkImage(image, 100, double.infinity, BoxFit.contain),
@@ -45,69 +46,81 @@ class CartItemCard extends StatelessWidget {
                   Text(title ?? "",
                       style: const TextStyle(fontWeight: FontWeight.bold)),
                   Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Size: $size"),
-                            Text("Color: $color"),
-                            const Expanded(child: SizedBox()),
-                            Row(
-                              children: [
-                                InkWell(
-                                  onTap: onDecrement,
-                                  child: Container(
-                                      height: 25,
-                                      width: 30,
-                                      decoration: BoxDecoration(
-                                          border: Border.all(
-                                              width: 1,
-                                              color:
-                                                  Colors.black.withOpacity(0.1))),
-                                      child: const Center(
-                                        child: Text('-',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold)),
-                                      )),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text("Size: $size"),
+                                    Text("Color: $color"),
+                                  ],
                                 ),
-                                Container(
-                                    height: 25,
-                                    width: 30,
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                            width: 1,
-                                            color:
-                                                Colors.black.withOpacity(0.1))),
-                                    child: Center(
-                                      child: Text(quantity!,
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.bold)),
-                                    )),
-                                InkWell(
-                                  onTap: onIncrement,
-                                  child: Container(
-                                      height: 25,
-                                      width: 30,
-                                      decoration: BoxDecoration(
-                                          border: Border.all(
-                                              width: 1,
-                                              color:
-                                                  Colors.black.withOpacity(0.1))),
-                                      child: const Center(
-                                        child: Text('+',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold)),
-                                      )),
-                                )
-                              ],
-                            )
-                          ],
+                              ),
+                              Text(totalPrice ?? "KWD 0",
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold)),
+                            ],
+                          ),
                         ),
-                        Text(totalPrice ?? "0",
-                            style: const TextStyle(fontWeight: FontWeight.bold)),
+                        const Expanded(child: SizedBox()),
+                        Row(
+                          children: [
+                            InkWell(
+                              onTap: onDecrement,
+                              child: Container(
+                                  height: 30,
+                                  width: 40,
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                          width: 1,
+                                          color:
+                                              Colors.black.withOpacity(0.1))),
+                                  child: const Center(
+                                    child: Text('-',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                  )),
+                            ),
+                            Container(
+                                height: 30,
+                                width: 40,
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        width: 1,
+                                        color: Colors.black.withOpacity(0.1))),
+                                child: Center(
+                                  child: Text(quantity!,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold)),
+                                )),
+                            InkWell(
+                              onTap: onIncrement,
+                              child: Container(
+                                  height: 30,
+                                  width: 40,
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                          width: 1,
+                                          color:
+                                              Colors.black.withOpacity(0.1))),
+                                  child: const Center(
+                                    child: Text('+',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                  )),
+                            ),
+                            const Expanded(child: SizedBox()),
+                            IconButton(
+                                onPressed: onRemove,
+                                icon: const Icon(AppIcons.delete))
+                          ],
+                        )
                       ],
                     ),
                   ),

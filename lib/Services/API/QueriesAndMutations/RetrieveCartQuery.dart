@@ -8,6 +8,12 @@ const String retrieveCartQuery = r'''query GetCart($cartId: ID!) {
       nodes {
         id
         quantity
+        cost{
+            totalAmount{
+                amount
+                currencyCode
+            }
+        }
         merchandise {
           ... on ProductVariant {
             id
