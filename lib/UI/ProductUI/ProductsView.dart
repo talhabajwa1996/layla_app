@@ -128,33 +128,36 @@ class _ProductsViewState extends State<ProductsView> {
                 padding: EdgeInsets.symmetric(horizontal: 0.w),
                 child: GridView.builder(
                     padding: EdgeInsets.zero,
-                    itemCount: widget.products?.edges?.length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, mainAxisExtent: 318.sp),
-                    itemBuilder: (context, index) {
-                      var productData = widget.products?.edges?[index];
-                      var priceData = productData?.node?.priceRange?.minVariantPrice;
-                      var discountedPrice = productData?.node?.compareAtPriceRange?.minVariantPrice;
-                      return InkWell(
-                        onTap: () {
-                          print("ID:: ${productData?.node?.id}");
-                          Navigator.push(
-                              context, MaterialPageRoute(builder: (_) => ProductDetail(productId: productData!.node!.id!)));
-                        },
-                        child: ProductCard(
+                  itemCount: widget.products?.edges?.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisExtent: 375.sp,
+                  ),
+                  itemBuilder: (context, index) {
+                    var productData = widget.products?.edges?[index];
+                    var priceData = productData?.node?.priceRange?.minVariantPrice;
+                    var discountedPrice = productData?.node?.compareAtPriceRange?.minVariantPrice;
+                    return InkWell(
+                      onTap: () {
+                        print("ID:: ${productData?.node?.id}");
+                        Navigator.push(
+                            context, MaterialPageRoute(builder: (_) => ProductDetail(productId: productData!.node!.id!)));
+                      },
+                      child: ProductCard(
                           width: size.width,
-                          height: 218.sp,
-                          productId: productData?.node?.id,
-                          images: getProductImages(productData?.node?.images?.edges),
-                          itemName: productData?.node?.title,
-                          description: productData?.node?.description,
-                          price: "${double.parse(priceData!.amount!).toStringAsFixed(3)} ${priceData.currencyCode}",
-                          isOnSale: discountedPrice?.amount != "0.0" ? true : false,
-                          discountedPrice: "${discountedPrice?.amount} ${priceData.currencyCode}",
-                          savedPercent: discountedPrice?.amount != "0.0"
-                              ? HelperFunctions()
-                                  .calculateDiscount(double.parse(discountedPrice!.amount!), double.parse(priceData.amount!))
-                              : "",
-                        ),
+                        height: 280.sp,
+                        productId: productData?.node?.id,
+                        images: getProductImages(productData?.node?.images?.edges),
+                        itemName: productData?.node?.title,
+                        description: productData?.node?.description,
+                        price: "${double.parse(priceData!.amount!).toStringAsFixed(3)} ${priceData.currencyCode}",
+                        isOnSale: discountedPrice?.amount != "0.0" ? true : false,
+                        discountedPrice: "${double.parse(discountedPrice!.amount!).toStringAsFixed(3)} ${priceData.currencyCode}",
+                        savedPercent: discountedPrice?.amount != "0.0"
+                            ? HelperFunctions()
+                                .calculateDiscount(double.parse(discountedPrice.amount!), double.parse(priceData.amount!))
+                            : "",
+                      ),
                       );
                     }),
               ),

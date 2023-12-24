@@ -25,7 +25,6 @@ class _FavoriteButtonState extends State<FavoriteButton> {
       return InkWell(
         onTap: () {
           favoriteProvider.setItemFavorite(widget.productId!);
-
         },
         child: Container(
           width: 28.sp,

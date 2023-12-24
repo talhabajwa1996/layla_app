@@ -71,8 +71,11 @@ class _SubCategoriesUIState extends State<SubCategoriesUI> {
                   padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 4.sp),
                   child: InkWell(
                     onTap: () {
-                      Navigator.pushNamed(context, RouteConstants.products, arguments: {"handle": subCollection?.url});
-                    },
+                      Navigator.pushNamed(context, RouteConstants.products, arguments: {
+                      "handle": subCollection?.url,
+                      'title': subCollection?.title,
+                    });
+                  },
                     child: Container(
                       width: size.width,
                       height: 65.sp,

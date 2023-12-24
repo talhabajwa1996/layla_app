@@ -7,6 +7,8 @@ import 'package:layla_app_dev/Services/ShopifyServices/Queries/getProductsByColl
 import 'package:layla_app_dev/Services/ShopifyServices/ShopifyServices.dart';
 import 'package:layla_app_dev/UI/ProductUI/ProductsView.dart';
 import 'package:provider/provider.dart';
+import '../../AppTheme/ColorConstants.dart';
+import '../../AppTheme/fontSizes.dart';
 import '../../Widgets/Buttons/customBackButton.dart';
 import '../../Widgets/Loaders/AppLoader.dart';
 
@@ -21,6 +23,7 @@ class ProductUI extends StatefulWidget {
 
 class _ProductUIState extends State<ProductUI> {
   String? handle;
+  String? title;
   Future<Map<String, dynamic>?>? getProducts;
 
   @override
@@ -33,6 +36,7 @@ class _ProductUIState extends State<ProductUI> {
     getProducts = ShopifyService().shopifyCustom.customQuery(
         gqlQuery: getProductsByCollectionWithFilters,
         variables: {'collectionHandle': handle, 'filters': Provider.of<FilteringController>(context, listen: false).filters});
+    title = widget.args?['title'];
   }
 
   Future<void> _handleRefresh() async {
@@ -58,10 +62,10 @@ class _ProductUIState extends State<ProductUI> {
               },
             ),
           ),
-          // title: Text(
-          //   "Back",
-          //   style: TextStyle(fontSize: FontSizes.normalText1, color: ColorConstants.primaryColor, fontWeight: FontWeight.w600),
-          // ),
+          title: Text(
+            title ?? "",
+            style: TextStyle(fontSize: FontSizes.normalText1, color: ColorConstants.primaryColor, fontWeight: FontWeight.w600),
+          ),
         ),
         body: RefreshIndicator(
           onRefresh: _handleRefresh,
