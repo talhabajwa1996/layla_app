@@ -72,6 +72,8 @@ dependencies:
   image_picker:
   flutter_image_compress:
   native_exif:
+  flutter_credit_card: ^4.0.1
+  my_fatoorah: ^3.3.0
 
 dev_dependencies:
   flutter_test:

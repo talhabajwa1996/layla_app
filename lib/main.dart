@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:layla_app_dev/AppTheme/appTheme.dart';
+import 'package:layla_app_dev/Controllers/AddressController/AddressController.dart';
 import 'package:layla_app_dev/Controllers/AuthController/AuthController.dart';
 import 'package:layla_app_dev/Controllers/CartControllers/CartController.dart';
+import 'package:layla_app_dev/Controllers/CheckoutController/CheckoutController.dart';
 import 'package:layla_app_dev/Controllers/DashboardController/dashboardController.dart';
 import 'package:layla_app_dev/Controllers/ExchangeAndReturnController/exchangeAndReturnController.dart';
 import 'package:layla_app_dev/Controllers/FavoriteController/FavoriteController.dart';
@@ -12,12 +14,12 @@ import 'package:layla_app_dev/Controllers/LocaleProvider.dart';
 import 'package:layla_app_dev/Controllers/SortingController/sortingController.dart';
 import 'package:layla_app_dev/Routes/Routes.dart';
 import 'package:layla_app_dev/Services/ShopifyServices/ShopifyServices.dart';
-import 'package:layla_app_dev/Utils/Constants/RouteConstants.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'Controllers/LocationController/locationController.dart';
 import 'Controllers/SearchBarController/searchBarController.dart';
 import 'Services/API/api.dart';
+import 'Utils/Constants/RouteConstants.dart';
 
 void main() {
   GraphqlApi.config();
@@ -58,6 +60,12 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider<CartController>(
           create: (context) => CartController(),
+        ),
+        ChangeNotifierProvider<CheckoutController>(
+          create: (context) => CheckoutController(),
+        ),
+        ChangeNotifierProvider<AddressController>(
+          create: (context) => AddressController(),
         ),
       ],
       child: ChangeNotifierProvider(

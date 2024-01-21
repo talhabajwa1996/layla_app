@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:layla_app_dev/Components/Cart/CartItemCard.dart';
+import 'package:layla_app_dev/Controllers/AddressController/AddressController.dart';
+import 'package:layla_app_dev/Controllers/CheckoutController/CheckoutController.dart';
 import 'package:layla_app_dev/Services/API/ServerResponse.dart';
 import 'package:layla_app_dev/Services/CartServices/CartServices.dart';
+import 'package:layla_app_dev/UI/CheckoutUI/ShippingDetailsUI.dart';
 import 'package:layla_app_dev/Widgets/EmptyList.dart';
+import 'package:layla_app_dev/Widgets/Loaders/AppLoader.dart';
 import 'package:layla_app_dev/Widgets/Notifiers/Toast.dart';
 import 'package:provider/provider.dart';
 import '../../AppTheme/ColorConstants.dart';
 import '../../Controllers/CartControllers/CartController.dart';
+import '../../Models/CheckoutModels/CreateCheckoutRequestModel.dart';
+import '../../Services/CheckoutServices/CheckoutService.dart';
+import '../../UI/CheckoutUI/CheckoutUI.dart';
 import '../../UI/ProductUI/productDetail.dart';
 import '../../Widgets/Buttons/CustomFilledButton.dart';
 
@@ -107,7 +114,7 @@ class Cart extends StatelessWidget {
                                 fontWeight: FontWeight.w500, fontSize: 16))
                       ],
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -122,18 +129,71 @@ class Cart extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 30),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: CustomFilledButton(
-                        height: 35,
-                        width: MediaQuery.of(context).size.width * 0.9,
-                        title: 'Checkout',
-                        btnColor: ColorConstants.primaryColor,
-                        textColor: ColorConstants.white,
-                        btnRadius: 5,
-                        onPressed: () async {},
-                      ),
-                    )
+                    Consumer<CheckoutController>(
+                        builder: (context, checkoutController, child) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: checkoutController.isCreatingCheckout
+                            ? const AppLoader()
+                            : CustomFilledButton(
+                                height: 35,
+                                width: MediaQuery.of(context).size.width * 0.9,
+                                title: 'Checkout',
+                                btnColor: ColorConstants.primaryColor,
+                                textColor: ColorConstants.white,
+                                btnRadius: 5,
+                                onPressed: () async {
+                                  var addressController =
+                                      Provider.of<AddressController>(context,
+                                          listen: false);
+                                  if (addressController.addressModel == null) {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const ShippingDetailsUI()));
+                                  } else {
+                                    List<LineItems> _lineItems = <LineItems>[];
+                                    Provider.of<CartController>(context,
+                                            listen: false)
+                                        .retrieveCartResponse!
+                                        .cart!
+                                        .lines!
+                                        .nodes!
+                                        .forEach((element) {
+                                      _lineItems.add(LineItems(
+                                          quantity: element.quantity,
+                                          variantId: element.merchandise!.id));
+                                    });
+                                    await CheckoutService()
+                                        .createCheckout(
+                                            context,
+                                            _lineItems,
+                                            addressController
+                                                .addressModel!.address!,
+                                            addressController
+                                                .addressModel!.city!,
+                                            addressController
+                                                .addressModel!.province!,
+                                            addressController
+                                                .addressModel!.country!,
+                                            addressController
+                                                .addressModel!.firstName!,
+                                            addressController
+                                                .addressModel!.lastName!,
+                                            addressController
+                                                .addressModel!.postalCode!)
+                                        .then((response) {
+                                      if (response.status == Status.COMPLETED) {
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    CheckoutUI()));
+                                      }
+                                    });
+                                  }
+                                }),
+                      );
+                    })
                   ],
                 ),
               )
