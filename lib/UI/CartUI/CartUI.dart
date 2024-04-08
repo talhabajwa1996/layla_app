@@ -9,7 +9,9 @@ import '../../Widgets/Loaders/AppLoader.dart';
 import '../ErrorUI/ErrorUI.dart';
 
 class CartUI extends StatefulWidget {
-  const CartUI({super.key});
+  final bool showTitle;
+
+  const CartUI({this.showTitle = false, super.key});
 
   @override
   State<CartUI> createState() => _CartUIState();
@@ -33,6 +35,12 @@ class _CartUIState extends State<CartUI> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: widget.showTitle
+          ? AppBar(
+              title: const Text('CART',
+                  style: TextStyle(fontWeight: FontWeight.w500)),
+            )
+          : null,
       body: cartId != null && cartId!.isNotEmpty
           ? RefreshIndicator(
               onRefresh: _onRefresh,
@@ -65,9 +73,7 @@ class _CartUIState extends State<CartUI> {
                 },
               ),
             )
-          : const Center(
-              child: EmptyList(message: 'Cart is Empty')
-            ),
+          : const Center(child: EmptyList(message: 'Cart is Empty')),
     );
   }
 }

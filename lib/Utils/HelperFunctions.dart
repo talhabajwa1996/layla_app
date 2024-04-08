@@ -80,6 +80,7 @@ class HelperFunctions {
   String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
       length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
 
+
 }
 
 AppLocalizations? localizedText(context) => AppLocalizations.of(context);

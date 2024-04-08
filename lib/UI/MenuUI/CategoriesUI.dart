@@ -36,19 +36,26 @@ class _CategoriesUIState extends State<CategoriesUI> {
                   onTap: () {
                     if (collectionItem!.subCollectionItems!.isNotEmpty) {
                       Navigator.pushNamed(context, RouteConstants.subCategories,
-                          arguments: {'title': collectionItem.title, 'items': collectionItem.subCollectionItems});
+                          arguments: {
+                            'title': collectionItem.title,
+                            'items': collectionItem.subCollectionItems,
+                            'handle': collectionItem.url
+                          });
                     } else {
-                      Navigator.pushNamed(context, RouteConstants.products, arguments: {
-                        "handle": collectionItem.url,
-                        'title': collectionItem.title,
-                      });
+                      Navigator.pushNamed(context, RouteConstants.products,
+                          arguments: {
+                            "handle": collectionItem.url,
+                            'title': collectionItem.title,
+                          });
                     }
                   },
                   child: Container(
                     width: size.width,
                     height: 65.sp,
                     padding: EdgeInsets.symmetric(horizontal: 18.w),
-                    decoration: BoxDecoration(color: ColorConstants.dullWhite, borderRadius: BorderRadius.circular(5.r)),
+                    decoration: BoxDecoration(
+                        color: ColorConstants.dullWhite,
+                        borderRadius: BorderRadius.circular(5.r)),
                     child: Center(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -59,15 +66,18 @@ class _CategoriesUIState extends State<CategoriesUI> {
                               collectionItem?.title ?? "",
                               style: TextStyle(
                                   fontSize: FontSizes.normalText1,
-                                  color: ColorConstants.textColorGrey.withOpacity(0.8),
+                                  color: ColorConstants.textColorGrey
+                                      .withOpacity(0.8),
                                   fontWeight: FontWeight.bold),
                             ),
                           ),
-                          collectionItem?.subCollectionItems != null && collectionItem!.subCollectionItems!.isNotEmpty
+                          collectionItem?.subCollectionItems != null &&
+                                  collectionItem!.subCollectionItems!.isNotEmpty
                               ? Icon(
                                   CupertinoIcons.forward,
                                   size: 20.sp,
-                                  color: ColorConstants.textColorGrey.withOpacity(0.5),
+                                  color: ColorConstants.textColorGrey
+                                      .withOpacity(0.5),
                                 )
                               : SizedBox()
                         ],
@@ -81,12 +91,14 @@ class _CategoriesUIState extends State<CategoriesUI> {
                           Padding(
                             padding: EdgeInsets.symmetric(vertical: 10.sp),
                             child: Divider(
-                              color: ColorConstants.textColorGrey.withOpacity(0.25),
+                              color: ColorConstants.textColorGrey
+                                  .withOpacity(0.25),
                             ),
                           ),
                           InkWell(
                             onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (_) {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (_) {
                                 return HelpUI();
                               }));
                             },
@@ -94,11 +106,12 @@ class _CategoriesUIState extends State<CategoriesUI> {
                               width: size.width,
                               height: 35.sp,
                               padding: EdgeInsets.symmetric(horizontal: 18.w),
-                              decoration:
-                                  BoxDecoration(borderRadius: BorderRadius.circular(5.r)),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5.r)),
                               child: Center(
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Row(
                                       children: [
@@ -115,7 +128,9 @@ class _CategoriesUIState extends State<CategoriesUI> {
                                             "Help",
                                             style: TextStyle(
                                                 fontSize: FontSizes.smallText,
-                                                color: ColorConstants.textColorGrey.withOpacity(0.8),
+                                                color: ColorConstants
+                                                    .textColorGrey
+                                                    .withOpacity(0.8),
                                                 fontWeight: FontWeight.bold),
                                           ),
                                         ),
@@ -124,7 +139,8 @@ class _CategoriesUIState extends State<CategoriesUI> {
                                     Icon(
                                       CupertinoIcons.forward,
                                       size: 20.sp,
-                                      color: ColorConstants.textColorGrey.withOpacity(0.5),
+                                      color: ColorConstants.textColorGrey
+                                          .withOpacity(0.5),
                                     )
                                   ],
                                 ),
@@ -133,7 +149,8 @@ class _CategoriesUIState extends State<CategoriesUI> {
                           ),
                           InkWell(
                             onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (_) {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (_) {
                                 return OurLocationsUI();
                               }));
                             },
@@ -141,11 +158,12 @@ class _CategoriesUIState extends State<CategoriesUI> {
                               width: size.width,
                               height: 35.sp,
                               padding: EdgeInsets.symmetric(horizontal: 18.w),
-                              decoration:
-                                  BoxDecoration(borderRadius: BorderRadius.circular(5.r)),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5.r)),
                               child: Center(
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Row(
                                       children: [
@@ -162,7 +180,9 @@ class _CategoriesUIState extends State<CategoriesUI> {
                                             "Locations",
                                             style: TextStyle(
                                                 fontSize: FontSizes.smallText,
-                                                color: ColorConstants.textColorGrey.withOpacity(0.8),
+                                                color: ColorConstants
+                                                    .textColorGrey
+                                                    .withOpacity(0.8),
                                                 fontWeight: FontWeight.bold),
                                           ),
                                         ),
@@ -171,14 +191,17 @@ class _CategoriesUIState extends State<CategoriesUI> {
                                     Icon(
                                       CupertinoIcons.forward,
                                       size: 20.sp,
-                                      color: ColorConstants.textColorGrey.withOpacity(0.5),
+                                      color: ColorConstants.textColorGrey
+                                          .withOpacity(0.5),
                                     )
                                   ],
                                 ),
                               ),
                             ),
                           ),
-                          SizedBox(height: 10.sp,)
+                          SizedBox(
+                            height: 10.sp,
+                          )
                         ],
                       )
                     : SizedBox()

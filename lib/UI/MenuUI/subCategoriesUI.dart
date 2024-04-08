@@ -33,11 +33,13 @@ class SubCategoriesUI extends StatefulWidget {
 class _SubCategoriesUIState extends State<SubCategoriesUI> {
   String? title;
   List<SubCollectionItems>? items;
+  String? handle;
 
   @override
   void initState() {
     title = widget.args?['title'];
     items = widget.args?['items'];
+    handle = widget.args?['handle'];
 
     super.initState();
   }
@@ -46,69 +48,129 @@ class _SubCategoriesUIState extends State<SubCategoriesUI> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.sizeOf(context);
     return Scaffold(
-      appBar: AppBar(
-
-        backgroundColor: ColorConstants.baseColor,
-        automaticallyImplyLeading: false,
-        leading: Padding(
-          padding: EdgeInsets.only(left: 15.w, top: 8.sp, bottom: 8.sp),
-          child: CustomBackButton(
-            onTap: () {
-              Navigator.pop(context);
-            },
+        appBar: AppBar(
+          backgroundColor: ColorConstants.baseColor,
+          automaticallyImplyLeading: false,
+          leading: Padding(
+            padding: EdgeInsets.only(left: 15.w, top: 8.sp, bottom: 8.sp),
+            child: CustomBackButton(
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+          ),
+          title: Text(
+            title ?? "",
+            style: TextStyle(
+                fontSize: FontSizes.normalText1,
+                color: ColorConstants.primaryColor,
+                fontWeight: FontWeight.w600),
           ),
         ),
-        title: Text(
-          title ?? "",
-          style: TextStyle(fontSize: FontSizes.normalText1, color: ColorConstants.primaryColor, fontWeight: FontWeight.w600),
-        ),
-      ),
-      body: ListView.builder(
-              itemCount: items?.length,
-              itemBuilder: (context, index) {
-                var subCollection = items?[index];
-                return Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 4.sp),
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.pushNamed(context, RouteConstants.products, arguments: {
-                      "handle": subCollection?.url,
-                      'title': subCollection?.title,
-                    });
-                  },
-                    child: Container(
-                      width: size.width,
-                      height: 65.sp,
-                      padding: EdgeInsets.symmetric(horizontal: 18.w),
-                      decoration: BoxDecoration(color: ColorConstants.dullWhite, borderRadius: BorderRadius.circular(5.r)),
-                      child: Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SizedBox(
-                              width: size.width * 0.5,
-                              child: Text(
-                                subCollection?.title ?? "",
-                                style: TextStyle(
-                                    fontSize: FontSizes.smallText,
-                                    color: ColorConstants.textColorGrey.withOpacity(0.8),
-                                    fontWeight: FontWeight.w700),
+        body: Column(
+          children: [
+            handle != null && handle!.isNotEmpty
+                ? Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 15.w, vertical: 4.sp),
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.pushNamed(context, RouteConstants.products,
+                            arguments: {
+                              "handle": handle,
+                              'title': title,
+                            });
+                      },
+                      child: Container(
+                        width: size.width,
+                        height: 65.sp,
+                        padding: EdgeInsets.symmetric(horizontal: 18.w),
+                        decoration: BoxDecoration(
+                            color: ColorConstants.dullWhite,
+                            borderRadius: BorderRadius.circular(5.r)),
+                        child: Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(
+                                width: size.width * 0.5,
+                                child: Text(
+                                  "View All",
+                                  style: TextStyle(
+                                      fontSize: FontSizes.normalText1,
+                                      color: ColorConstants.textColorGrey
+                                          .withOpacity(0.8),
+                                      fontWeight: FontWeight.bold),
+                                ),
                               ),
-                            ),
-                            Icon(
-                              CupertinoIcons.forward,
-                              size: 20.sp,
-                              color: ColorConstants.textColorGrey.withOpacity(0.5),
-                            )
-                            // collectionItem?.subCollectionItems != null && collectionItem!.subCollectionItems!.isNotEmpty
-                            //     ? CustomBackButton() : SizedBox()
-                          ],
+                              Icon(
+                                CupertinoIcons.forward,
+                                size: 20.sp,
+                                color: ColorConstants.textColorGrey
+                                    .withOpacity(0.5),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                );
-              })
-    );
+                  )
+                : const SizedBox(),
+            Expanded(
+              child: ListView.builder(
+                  itemCount: items?.length,
+                  itemBuilder: (context, index) {
+                    var subCollection = items?[index];
+                    return Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 15.w, vertical: 4.sp),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.pushNamed(context, RouteConstants.products,
+                              arguments: {
+                                "handle": subCollection?.url,
+                                'title': '$title / ${subCollection?.title}',
+                              });
+                        },
+                        child: Container(
+                          width: size.width,
+                          height: 65.sp,
+                          padding: EdgeInsets.symmetric(horizontal: 18.w),
+                          decoration: BoxDecoration(
+                              color: ColorConstants.dullWhite,
+                              borderRadius: BorderRadius.circular(5.r)),
+                          child: Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                SizedBox(
+                                  width: size.width * 0.5,
+                                  child: Text(
+                                    subCollection?.title ?? "",
+                                    style: TextStyle(
+                                        fontSize: FontSizes.smallText,
+                                        color: ColorConstants.textColorGrey
+                                            .withOpacity(0.8),
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                ),
+                                Icon(
+                                  CupertinoIcons.forward,
+                                  size: 20.sp,
+                                  color: ColorConstants.textColorGrey
+                                      .withOpacity(0.5),
+                                )
+                                // collectionItem?.subCollectionItems != null && collectionItem!.subCollectionItems!.isNotEmpty
+                                //     ? CustomBackButton() : SizedBox()
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  }),
+            ),
+          ],
+        ));
   }
 }

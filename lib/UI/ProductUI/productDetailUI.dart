@@ -9,6 +9,7 @@ import 'package:layla_app_dev/Services/API/ServerResponse.dart';
 import 'package:layla_app_dev/Services/CartServices/CartServices.dart';
 import 'package:layla_app_dev/Services/SharedPreferenceService/SharedPreferencesService.dart';
 import 'package:layla_app_dev/Services/ShopifyServices/ShopifyServices.dart';
+import 'package:layla_app_dev/Utils/Constants/RouteConstants.dart';
 import 'package:layla_app_dev/Utils/HelperFunctions.dart';
 import 'package:layla_app_dev/Widgets/Buttons/CustomFilledButton.dart';
 import 'package:layla_app_dev/Widgets/Buttons/customBackButton.dart';
@@ -18,13 +19,11 @@ import 'package:layla_app_dev/Widgets/Images/AppLogo.dart';
 import 'package:layla_app_dev/Widgets/Loaders/AppLoader.dart';
 import 'package:layla_app_dev/Widgets/Notifiers/Toast.dart';
 import 'package:shopify_flutter/models/models.dart';
-import 'package:shopify_flutter/models/src/product/product_variant/product_variant.dart';
 import 'package:shopify_flutter/models/src/product/selected_option/selected_option.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../AppTheme/ColorConstants.dart';
 import '../../Models/CartModels/AddItemToCartResponseModel.dart';
-import '../../Widgets/Buttons/CustomElevatedButton.dart';
 import '../../Widgets/Images/NetworkImage.dart';
 
 class ProductDetailUI extends StatefulWidget {
@@ -44,9 +43,11 @@ class _ProductDetailUIState extends State<ProductDetailUI> {
   Future<List<Product>?>? future;
   bool _addToCartLoading = false;
   Product? productDetailData;
+  bool? _addedToCart;
 
   @override
   void initState() {
+    _addedToCart = false;
     productDetailData = widget.productDetailDataInitial;
     super.initState();
     var (a, b) = getFirstAvailableOption();
@@ -72,56 +73,50 @@ class _ProductDetailUIState extends State<ProductDetailUI> {
         children: [
           ListView(
             children: [
-              Stack(
-                alignment: Alignment.bottomCenter,
-                children: [
-                  CustomCarousel(
-                      height: size.height * 0.6,
-                      carouselController: carouselController,
-                      autoPlay: false,
-                      enableInfiniteScroll: false,
-                      autoPlayInterval: Duration(seconds: 1),
-                      initialPage: currentIndex,
-                      onPageChanged: (index, reason) {
-                        setState(() {
-                          currentIndex = index;
-                        });
-                      },
-                      carouselItems: productDetailData!.images.isNotEmpty
-                          ? List.generate(productDetailData!.images.length,
-                              (index) {
-                              var shopifyProductImage =
-                                  productDetailData!.images;
-                              return appNetworkImage(
-                                  shopifyProductImage[index].originalSrc,
-                                  size.width,
-                                  double.infinity,
-                                  BoxFit.contain);
-                            })
-                          : [
-                              const SizedBox(
-                                child: AppLogo(),
-                              )
-                            ]),
-                  productDetailData!.images.isNotEmpty &&
-                          productDetailData!.images.length > 1
-                      ? SizedBox(
-                          height: 30.sp,
-                          child: AnimatedSmoothIndicator(
-                              effect: ExpandingDotsEffect(
-                                  expansionFactor: 1.5.w,
-                                  dotWidth: 8.sp,
-                                  dotHeight: 8.sp,
-                                  spacing: 5.w,
-                                  dotColor: ColorConstants.textColorGrey
-                                      .withOpacity(0.5),
-                                  activeDotColor: ColorConstants.primaryColor),
-                              activeIndex: currentIndex,
-                              count: productDetailData!.images.length),
-                        )
-                      : SizedBox()
-                ],
-              ),
+              CustomCarousel(
+                  height: size.height * 0.6,
+                  carouselController: carouselController,
+                  autoPlay: false,
+                  enableInfiniteScroll: false,
+                  autoPlayInterval: Duration(seconds: 1),
+                  initialPage: currentIndex,
+                  onPageChanged: (index, reason) {
+                    setState(() {
+                      currentIndex = index;
+                    });
+                  },
+                  carouselItems: productDetailData!.images.isNotEmpty
+                      ? List.generate(productDetailData!.images.length,
+                          (index) {
+                          var shopifyProductImage = productDetailData!.images;
+                          return appNetworkImage(
+                              shopifyProductImage[index].originalSrc,
+                              size.width,
+                              double.infinity,
+                              BoxFit.contain);
+                        })
+                      : [
+                          const SizedBox(
+                            child: AppLogo(),
+                          )
+                        ]),
+              productDetailData!.images.isNotEmpty &&
+                      productDetailData!.images.length > 1
+                  ? SizedBox(
+                      height: 30.sp,
+                      child: AnimatedSmoothIndicator(
+                          effect: ExpandingDotsEffect(
+                              expansionFactor: 1.5.w,
+                              dotWidth: 8.sp,
+                              dotHeight: 8.sp,
+                              spacing: 5.w,
+                              dotColor:
+                                  ColorConstants.textColorGrey.withOpacity(0.5),
+                              activeDotColor: ColorConstants.primaryColor),
+                          activeIndex: currentIndex,
+                          count: productDetailData!.images.length),
+                    )
+                  : SizedBox(),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
@@ -157,7 +152,7 @@ class _ProductDetailUIState extends State<ProductDetailUI> {
                       children: [
                         productDetailData!.hasComparablePrice
                             ? Text(
-                                "${productDetailData!.currencyCode} ${productDetailData!.compareAtPrice.toString()}",
+                                "${productDetailData!.currencyCode} ${productDetailData!.compareAtPrice.toStringAsFixed(3)}",
                                 style: TextStyle(
                                     fontSize: FontSizes.extraSmallText,
                                     fontWeight: FontWeight.w600,
@@ -170,7 +165,7 @@ class _ProductDetailUIState extends State<ProductDetailUI> {
                               productDetailData!.hasComparablePrice ? 3.w : 0,
                         ),
                         Text(
-                          "${productDetailData!.currencyCode} ${productDetailData!.price.toString()}",
+                          "${productDetailData!.currencyCode} ${productDetailData!.price.toStringAsFixed(3)}",
                           style: TextStyle(
                               fontSize: FontSizes.normalText1,
                               fontWeight: FontWeight.w600,
@@ -227,9 +222,6 @@ class _ProductDetailUIState extends State<ProductDetailUI> {
                   ],
                 ),
               ),
-              SizedBox(
-                height: size.height * 0.3,
-              )
             ],
           ),
           Align(
@@ -255,84 +247,127 @@ class _ProductDetailUIState extends State<ProductDetailUI> {
           ),
           Align(
             alignment: Alignment.bottomCenter,
-            child: Container(
-              height: 100.sp,
-              width: size.width,
-              color: ColorConstants.white,
-              child: UnconstrainedBox(
-                child: _addToCartLoading
-                    ? AppLoader()
-                    : CustomFilledButton(
-                        height: 35.sp,
-                        width: size.width * 0.9,
-                        title:
-                            checkProductAvailability(productSize, productColor)
-                                ? "Add to cart"
-                                : "Sold out",
-                        btnColor:
-                            checkProductAvailability(productSize, productColor)
-                                ? ColorConstants.primaryColor
-                                : ColorConstants.grey,
-                        textColor: ColorConstants.white,
-                        btnRadius: 5.r,
-                        onPressed: () async {
-                          if (checkProductAvailability(
-                              productSize, productColor)) {
-                            setState(() => _addToCartLoading = true);
-                            var productVariant = productDetailData!
-                                .productVariants
-                                .where((element) => element.selectedOptions!
-                                    .contains(SelectedOption(
-                                        name: 'Size', value: productSize)))
-                                .where((element) => element.selectedOptions!
-                                    .contains(SelectedOption(
-                                        name: 'Color', value: productColor)))
-                                .first;
-                            bool cartCreated = await SharedPreferencesService()
-                                .checkKey('cart_id');
-                            if (cartCreated) {
-                              ServerResponse<AddItemToCartResponseModel>
-                                  response = await CartServices().addItemToCart(
-                                      context, productVariant.id);
-                              if (response.status == Status.COMPLETED) {
-                                showToast("Added to Cart");
-                                List<Product>? productsDataUpdated = await ShopifyService()
-                                    .shopifyStore
-                                    .getProductsByIds([
-                                  productDetailData!.id
-                                ]);
-                                setState(() {
-                                  productDetailData = productsDataUpdated!.first;
-                                  _buildOptions();
-                                });
-                              } else {
-                                showToast(response.message!);
-                              }
-                            } else {
-                              ServerResponse<CreateCartAndAddItemResponseModel>
-                                  response = await CartServices()
-                                      .createCartAndAddItem(
-                                          context, productVariant.id);
-                              if (response.status == Status.COMPLETED) {
-                                showToast("Added to Cart");
-                                List<Product>? productsDataUpdated = await ShopifyService()
-                                    .shopifyStore
-                                    .getProductsByIds([
-                                  productDetailData!.id
-                                ]);
-                                setState(() {
-                                  productDetailData = productsDataUpdated!.first;
-                                  _buildOptions();
-                                });
-                              } else {
-                                showToast(response.message!);
-                              }
-                            }
-                            setState(() => _addToCartLoading = false);
-                          }
-                        },
-                      ),
-              ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    height: 100.sp,
+                    color: ColorConstants.white,
+                    child: UnconstrainedBox(
+                      child: _addToCartLoading
+                          ? const AppLoader()
+                          : CustomFilledButton(
+                              height: 35.sp,
+                              width: _addedToCart!
+                                  ? size.width * 0.43
+                                  : size.width * 0.9,
+                              title: checkProductAvailability(
+                                      productSize, productColor)
+                                  ? "Add to cart"
+                                  : "Sold out",
+                              btnColor: checkProductAvailability(
+                                      productSize, productColor)
+                                  ? ColorConstants.primaryColor
+                                  : ColorConstants.grey,
+                              textColor: ColorConstants.white,
+                              btnRadius: 5.r,
+                              onPressed: () async {
+                                if (checkProductAvailability(
+                                    productSize, productColor)) {
+                                  setState(() => _addToCartLoading = true);
+                                  var productVariant = productDetailData!
+                                      .productVariants
+                                      .where((element) => element
+                                          .selectedOptions!
+                                          .contains(SelectedOption(
+                                              name: 'Size',
+                                              value: productSize)))
+                                      .where((element) => element
+                                          .selectedOptions!
+                                          .contains(SelectedOption(
+                                              name: 'Color',
+                                              value: productColor)))
+                                      .first;
+                                  bool cartCreated =
+                                      await SharedPreferencesService()
+                                          .checkKey('cart_id');
+                                  if (cartCreated) {
+                                    ServerResponse<AddItemToCartResponseModel>
+                                        response = await CartServices()
+                                            .addItemToCart(
+                                                context, productVariant.id);
+                                    if (response.status == Status.COMPLETED) {
+                                      showToast("Added to Cart");
+                                      setState(() {
+                                        _addedToCart = true;
+                                      });
+                                      List<Product>? productsDataUpdated =
+                                          await ShopifyService()
+                                              .shopifyStore
+                                              .getProductsByIds(
+                                                  [productDetailData!.id]);
+                                      setState(() {
+                                        productDetailData =
+                                            productsDataUpdated!.first;
+                                        _buildOptions();
+                                      });
+                                    } else {
+                                      showToast(response.message!);
+                                    }
+                                  } else {
+                                    ServerResponse<
+                                            CreateCartAndAddItemResponseModel>
+                                        response = await CartServices()
+                                            .createCartAndAddItem(
+                                                context, productVariant.id);
+                                    if (response.status == Status.COMPLETED) {
+                                      showToast("Added to Cart");
+                                      setState(() {
+                                        _addedToCart = true;
+                                      });
+                                      List<Product>? productsDataUpdated =
+                                          await ShopifyService()
+                                              .shopifyStore
+                                              .getProductsByIds(
+                                                  [productDetailData!.id]);
+                                      setState(() {
+                                        productDetailData =
+                                            productsDataUpdated!.first;
+                                        _buildOptions();
+                                      });
+                                    } else {
+                                      showToast(response.message!);
+                                    }
+                                  }
+                                  setState(() => _addToCartLoading = false);
+                                }
+                              },
+                            ),
+                    ),
+                  ),
+                ),
+                _addedToCart!
+                    ? Expanded(
+                        child: Container(
+                          height: 100.sp,
+                          color: ColorConstants.white,
+                          child: UnconstrainedBox(
+                            child: CustomFilledButton(
+                              height: 35.sp,
+                              width: size.width * 0.43,
+                              title: "Go to Cart",
+                              btnColor: ColorConstants.primaryColor,
+                              textColor: ColorConstants.white,
+                              btnRadius: 5.r,
+                              onPressed: () => Navigator.of(context).pushNamed(
+                                  RouteConstants.cart,
+                                  arguments: true),
+                            ),
+                          ),
+                        ),
+                      )
+                    : const SizedBox(),
+              ],
             ),
           )
         ],

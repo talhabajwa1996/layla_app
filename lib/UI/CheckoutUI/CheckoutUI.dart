@@ -4,7 +4,11 @@ import 'package:layla_app_dev/AppTheme/ColorConstants.dart';
 import 'package:layla_app_dev/Components/Checkout/CheckoutItemCard.dart';
 import 'package:layla_app_dev/Controllers/AddressController/AddressController.dart';
 import 'package:layla_app_dev/Controllers/CheckoutController/CheckoutController.dart';
+import 'package:layla_app_dev/Models/CheckoutModels/CompleteCheckoutRequestModel.dart';
+import 'package:layla_app_dev/Services/API/ServerResponse.dart';
+import 'package:layla_app_dev/Services/CheckoutServices/CheckoutService.dart';
 import 'package:layla_app_dev/Services/PaymentGatewayServices/MyFatoorahPaymentServices.dart';
+import 'package:my_fatoorah/my_fatoorah.dart';
 import 'package:provider/provider.dart';
 import '../../Controllers/CartControllers/CartController.dart';
 import '../../Widgets/Buttons/CustomFilledButton.dart';
@@ -222,92 +226,6 @@ class _CheckoutUIState extends State<CheckoutUI> {
                             fontWeight: FontWeight.w500, fontSize: 16))
                   ],
                 ),
-                // const SizedBox(height: 50),
-                // const Divider(),s
-                // const SizedBox(height: 50),
-                // const Padding(
-                //   padding: EdgeInsets.symmetric(vertical: 10),
-                //   child: Text('Payment',
-                //       style: TextStyle(
-                //           fontWeight: FontWeight.bold,
-                //           fontSize: 23,
-                //           color: ColorConstants.textColorGrey)),
-                // ),
-                // CreditCardForm(
-                //   formKey: _creditCardFormKey,
-                //   // Required
-                //   cardNumber: '',
-                //   // Required
-                //   expiryDate: '',
-                //   // Required
-                //   cardHolderName: '',
-                //   // Required
-                //   cvvCode: '',
-                //   // Required
-                //   // cardNumberKey: 'ss',
-                //   // cvvCodeKey: cvvCodeKey,
-                //   // expiryDateKey: expiryDateKey,
-                //   // cardHolderKey: cardHolderKey,
-                //   onCreditCardModelChange: (CreditCardModel data) {
-                //     _creditCardModel = data;
-                //   },
-                //   // Required
-                //   obscureCvv: true,
-                //   obscureNumber: false,
-                //   isHolderNameVisible: true,
-                //   isCardNumberVisible: true,
-                //   isExpiryDateVisible: true,
-                //   enableCvv: true,
-                //   cvvValidationMessage: 'Please input a valid CVV',
-                //   dateValidationMessage: 'Please input a valid date',
-                //   numberValidationMessage: 'Please input a valid number',
-                //   // cardNumberValidator: (String? cardNumber){},
-                //   // expiryDateValidator: (String? expiryDate){},
-                //   // cvvValidator: (String? cvv){},
-                //   // cardHolderValidator: (String? cardHolderName){},
-                //   onFormComplete: () {
-                //     _creditCardFormKey.currentState!.validate();
-                //   },
-                //   autovalidateMode: AutovalidateMode.disabled,
-                //   disableCardNumberAutoFillHints: false,
-                //   inputConfiguration: const InputConfiguration(
-                //     cardNumberDecoration: InputDecoration(
-                //       border: OutlineInputBorder(),
-                //       labelText: 'Number',
-                //       hintText: 'XXXX XXXX XXXX XXXX',
-                //     ),
-                //     expiryDateDecoration: InputDecoration(
-                //       border: OutlineInputBorder(),
-                //       labelText: 'Expired Date',
-                //       hintText: 'XX/XX',
-                //     ),
-                //     cvvCodeDecoration: InputDecoration(
-                //       border: OutlineInputBorder(),
-                //       labelText: 'CVV',
-                //       hintText: 'XXX',
-                //     ),
-                //     cardHolderDecoration: InputDecoration(
-                //       border: OutlineInputBorder(),
-                //       labelText: 'Card Holder',
-                //     ),
-                //     cardNumberTextStyle: TextStyle(
-                //       fontSize: 10,
-                //       color: Colors.black,
-                //     ),
-                //     cardHolderTextStyle: TextStyle(
-                //       fontSize: 10,
-                //       color: Colors.black,
-                //     ),
-                //     expiryDateTextStyle: TextStyle(
-                //       fontSize: 10,
-                //       color: Colors.black,
-                //     ),
-                //     cvvCodeTextStyle: TextStyle(
-                //       fontSize: 10,
-                //       color: Colors.black,
-                //     ),
-                //   ),
-                // ),
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(vertical: 30, horizontal: 10),
@@ -319,15 +237,7 @@ class _CheckoutUIState extends State<CheckoutUI> {
                       textColor: ColorConstants.white,
                       btnRadius: 5,
                       onPressed: () async {
-                        if (_addressFormKey.currentState!.validate()
-                            // && _creditCardFormKey.currentState!.validate()
-                            ) {
-                          // await MyFatoorahPaymentService().executeDirectPayment(
-                          //     _creditCardModel!.cardHolderName,
-                          //     _creditCardModel!.cardNumber,
-                          //     _creditCardModel!.expiryDate.substring(0, 1),
-                          //     _creditCardModel!.expiryDate.substring(3, 4),
-                          //     _creditCardModel!.cvvCode);
+                        if (_addressFormKey.currentState!.validate()) {
                           await MyFatoorahPaymentService()
                               .executePayment(
                                   context,
@@ -346,8 +256,86 @@ class _CheckoutUIState extends State<CheckoutUI> {
                                           .first
                                           .price!
                                           .amount!)))
-                              .then((paymentResponse) {
-                            print("PaymentID: ${paymentResponse!.paymentId!}");
+                              .then((paymentResponse) async {
+                            if (paymentResponse != null &&
+                                paymentResponse.status ==
+                                    PaymentStatus.Success) {
+                              List<CartItems> cartItems = [];
+                              cartController
+                                  .retrieveCartResponse!.cart!.lines!.nodes!
+                                  .forEach((element) {
+                                cartItems.add(CartItems(
+                                    variantId: getOrderNoFromUrl(element.merchandise!.id!),
+                                    quantity: element.quantity,
+                                    productId: getOrderNoFromUrl(element.merchandise!.product!.id!)));
+                              });
+                              CompleteCheckoutRequestModel request =
+                                  CompleteCheckoutRequestModel(
+                                      createordersData: [
+                                    CreateordersData(
+                                        location: 'Head Office',
+                                        cartItems: cartItems,
+                                        cusomerInfo: CusomerInfo(
+                                            email: 'talhabajwa1996@gmail.com',
+                                            firstName: 'Talha',
+                                            lastName: 'Bajwa',
+                                            addresses: [
+                                              Addresses(
+                                                  firstName: 'Talha',
+                                                  lastName: 'Bajwa',
+                                                  country:
+                                                      _countryController!.text,
+                                                  city: _cityController!.text,
+                                                  zip: _postalCodeController!
+                                                      .text,
+                                                  address1:
+                                                      _addressController!.text,
+                                                  phone: '+923314978350')
+                                            ]),
+                                        financialStatus: 'paid',
+                                        transactions: [
+                                          Transactions(
+                                              amount: double.parse(
+                                                  cartController
+                                                      .retrieveCartResponse!
+                                                      .cart!
+                                                      .cost!
+                                                      .totalAmount!
+                                                      .amount!),
+                                              gateway: 'my_fatoorah',
+                                              processingMethod: 'online',
+                                              status: 'success',
+                                              transactionId:
+                                                  paymentResponse.paymentId)
+                                        ],
+                                        // shippingCharge: [
+                                        //   ShippingCharge(
+                                        //       title: 'Standard',
+                                        //       price: checkoutController
+                                        //           .createCheckoutResponse!
+                                        //           .checkoutCreate!
+                                        //           .checkout!
+                                        //           .availableShippingRates!
+                                        //           .shippingRates!
+                                        //           .first
+                                        //           .price!
+                                        //           .amount!,
+                                        //       handle:
+                                        //           'shopify-Standard-${checkoutController.createCheckoutResponse!.checkoutCreate!.checkout!.availableShippingRates!.shippingRates!.first.price!.amount!}'),
+                                        // ]
+                                    )
+                                  ]);
+                              await CheckoutService()
+                                  .completeCheckout(context, request).then((value){
+                                    if (value.status == Status.ERROR){
+                                      print('Error ${value.message}');
+                                    }
+                              });
+                              print("PaymentID: ${paymentResponse!.paymentId}");
+                              print("Name: ${paymentResponse.status.name}");
+                              print("Index: ${paymentResponse.status.index}");
+                              print("URL: ${paymentResponse.url}");
+                            }
                           });
                         }
                       }),
@@ -358,5 +346,11 @@ class _CheckoutUIState extends State<CheckoutUI> {
         ),
       ),
     );
+  }
+
+  int getOrderNoFromUrl(String input) {
+    RegExp regExp = RegExp(r'\d+');
+    String? result = regExp.stringMatch(input);
+    return int.parse(result!);
   }
 }

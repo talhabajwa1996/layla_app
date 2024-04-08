@@ -1,11 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:layla_app_dev/Controllers/CheckoutController/CheckoutController.dart';
+import 'package:layla_app_dev/Models/CheckoutModels/CompleteCheckoutResponseModel.dart';
 import 'package:layla_app_dev/Models/CheckoutModels/CreateCheckoutRequestModel.dart';
 import 'package:layla_app_dev/Models/CheckoutModels/CreateCheckoutResponseModel.dart';
 import 'package:layla_app_dev/Services/ShopifyServices/Queries/createCheckout.dart';
 import 'package:provider/provider.dart';
+import '../../Models/CheckoutModels/CompleteCheckoutRequestModel.dart';
 import '../API/ServerResponse.dart';
 import '../API/api.dart';
+import '../API/app_exceptions.dart';
+import '../API/rest_api.dart';
 
 class CheckoutService {
   Future<ServerResponse<CreateCheckoutResponseModel>> createCheckout(
@@ -56,6 +60,34 @@ class CheckoutService {
     } on Exception catch (e) {
       Provider.of<CheckoutController>(context, listen: false)
           .setIsCreatingCheckout(false);
+      return ServerResponse.error(e.toString());
+    }
+  }
+
+  Future<ServerResponse<CompleteCheckoutResponseModel>> completeCheckout(
+      BuildContext context, CompleteCheckoutRequestModel requestModel) async {
+    try {
+      Map<String, dynamic> response =
+          await Api.postRequestData("/create/order", requestModel.toJson())
+              as Map<String, dynamic>;
+      CompleteCheckoutResponseModel responseModel =
+          CompleteCheckoutResponseModel.fromJson(response);
+      return ServerResponse.completed(responseModel);
+    } on BadRequestException {
+      return ServerResponse.error('Bad Request Exception');
+    } on UnauthorisedException {
+      return ServerResponse.error('The User is Un-authorized');
+    } on RequestNotFoundException {
+      return ServerResponse.error('Request Not Found');
+    } on UnautorizationException {
+      return ServerResponse.error('The User is Un-authorized');
+    } on InternalServerException {
+      return ServerResponse.error('Internal Server Error');
+    } on ServerNotFoundException {
+      return ServerResponse.error('Server Not Available');
+    } on FetchDataException {
+      return ServerResponse.error('An Error occurred while Fetching the Data');
+    } catch (e) {
       return ServerResponse.error(e.toString());
     }
   }

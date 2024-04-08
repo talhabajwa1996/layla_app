@@ -46,9 +46,9 @@ class _CustomSectionsWithSaleOptionState extends State<CustomSectionsWithSaleOpt
                 itemCount: widget.itemsList?.length ?? 0,
                 itemBuilder: (_, index) {
                   var productDetailData = widget.itemsList?[index];
-                  var price = "${productDetailData?.currencyCode} ${productDetailData?.price.toString()}";
+                  var price = "${productDetailData?.currencyCode} ${productDetailData?.price.toStringAsFixed(3)}";
                   var discountedPrice = productDetailData!.hasComparablePrice
-                      ? "${productDetailData.currencyCode} ${productDetailData.compareAtPrice.toString()}": "";
+                      ? "${productDetailData.currencyCode} ${productDetailData.compareAtPrice.toStringAsFixed(3)}": "";
                   var savedPercent = productDetailData.hasComparablePrice
                       ? HelperFunctions().calculateDiscount(productDetailData.compareAtPrice, productDetailData.price): "";
                   return InkWell(
@@ -83,20 +83,7 @@ class _CustomSectionsWithSaleOptionState extends State<CustomSectionsWithSaleOpt
                 height: 197.sp,
                 color: ColorConstants.secondaryColor,
                 child: images.isNotEmpty
-                    ? CustomCarousel(
-                    height: 197.sp,
-                    carouselController: carouselController,
-                    autoPlay: false,
-                    enableInfiniteScroll: false,
-                    autoPlayInterval: Duration(seconds: 1),
-                    initialPage: currentIndex,
-                    onPageChanged: (index, reason) {
-                      setState(() {
-                        currentIndex = index;
-                      });
-                    },
-                    carouselItems: List.generate(images.length,
-                            (index) => appNetworkImage(images[index], double.infinity, double.infinity, BoxFit.fill)))
+                    ? appNetworkImage(images.first, double.infinity, double.infinity, BoxFit.cover)
                     : SizedBox(
                   child: AppLogo(),
                 ),

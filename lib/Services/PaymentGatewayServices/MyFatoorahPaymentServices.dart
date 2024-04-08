@@ -10,7 +10,7 @@ class MyFatoorahPaymentService {
       PaymentResponse response = await MyFatoorah.startPayment(
         afterPaymentBehaviour: AfterPaymentBehaviour.BeforeCallbackExecution,
         context: context,
-        request: MyfatoorahRequest.live(
+        request: MyfatoorahRequest.test(
             currencyIso: Country.Kuwait,
             successUrl:
                 'https://banner2.cleanpng.com/20171209/2ff/web-page-registration-success-flag-material-5a2c2a5d3d20d3.8268076415128438692504.jpg',

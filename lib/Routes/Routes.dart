@@ -3,6 +3,7 @@ import 'package:layla_app_dev/UI/AppTrackingUI/AppTrackingUI.dart';
 import 'package:layla_app_dev/UI/AuthUI/AuthUI.dart';
 import 'package:layla_app_dev/UI/AuthUI/ForgetPasswordUI.dart';
 import 'package:layla_app_dev/UI/BlogsUI/articlesUI.dart';
+import 'package:layla_app_dev/UI/CartUI/CartUI.dart';
 import 'package:layla_app_dev/UI/HomeUI/HomeUI.dart';
 import 'package:layla_app_dev/UI/MenuUI/subCategoriesUI.dart';
 import 'package:layla_app_dev/UI/ProductUI/productUI.dart';
@@ -64,6 +65,11 @@ class RouteGenerator {
       case RouteConstants.articles:
         return PageTransition(
           child: ArticlesUI(args: args),
+          type: PageTransitionType.rightToLeft,
+        );
+      case RouteConstants.cart:
+        return PageTransition(
+          child:  CartUI(showTitle: args),
           type: PageTransitionType.rightToLeft,
         );
       default:
