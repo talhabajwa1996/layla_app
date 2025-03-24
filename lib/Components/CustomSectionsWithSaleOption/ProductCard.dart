@@ -39,7 +39,7 @@ class ProductCard extends StatefulWidget {
 }
 
 class _ProductCardState extends State<ProductCard> {
-  final CarouselController carouselController = CarouselController();
+  final CarouselSliderController carouselController = CarouselSliderController();
 
   int currentIndex = 0;
 

@@ -8,7 +8,7 @@ class CustomCarousel extends StatelessWidget {
   final int? initialPage;
   final double? viewPortFraction;
   final Duration? autoPlayInterval;
-  final CarouselController? carouselController;
+  final CarouselSliderController? carouselController;
   final dynamic Function(int, CarouselPageChangedReason)? onPageChanged;
   final bool? enableInfiniteScroll;
 

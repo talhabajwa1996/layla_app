@@ -48,7 +48,7 @@ class CustomOutlineButton extends StatelessWidget {
         child: buttonIcon == null
             ? ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  primary: buttonColor,
+                  // primary: buttonColor,
                   side: BorderSide(color: borderColor!),
                   elevation: 0,
                   alignment: Alignment.center,
@@ -73,7 +73,7 @@ class CustomOutlineButton extends StatelessWidget {
               )
             : ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
-                  primary: buttonColor,
+                  // primary: buttonColor,
                   side: BorderSide(color: borderColor!),
                   elevation: 0,
                   alignment: Alignment.center,

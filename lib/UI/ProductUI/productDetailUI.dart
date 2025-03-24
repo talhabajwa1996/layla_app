@@ -36,7 +36,7 @@ class ProductDetailUI extends StatefulWidget {
 }
 
 class _ProductDetailUIState extends State<ProductDetailUI> {
-  final CarouselController carouselController = CarouselController();
+  final CarouselSliderController carouselController = CarouselSliderController();
   int currentIndex = 0;
   String productSize = "";
   String productColor = "";
@@ -379,9 +379,9 @@ class _ProductDetailUIState extends State<ProductDetailUI> {
     return ListView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        itemCount: productDetailData!.option.length,
+        itemCount: productDetailData!.options.length,
         itemBuilder: (context, firstIndex) {
-          var option = productDetailData!.option[firstIndex];
+          var option = productDetailData!.options[firstIndex];
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -406,7 +406,7 @@ class _ProductDetailUIState extends State<ProductDetailUI> {
                       bool isSizeAvailable =
                           option.name.toLowerCase() == "size" &&
                               !checkSizeAvailability(
-                                  size: productDetailData?.option
+                                  size: productDetailData?.options
                                       .where((element) =>
                                           element.name.toLowerCase() == "size")
                                       .first
@@ -416,7 +416,7 @@ class _ProductDetailUIState extends State<ProductDetailUI> {
                           option.name.toLowerCase() == "color" &&
                               !checkSizeAvailability(
                                   size: productSize,
-                                  color: productDetailData?.option
+                                  color: productDetailData?.options
                                       .where((element) =>
                                           element.name.toLowerCase() == "color")
                                       .first
@@ -576,11 +576,11 @@ class _ProductDetailUIState extends State<ProductDetailUI> {
   (String, String) getFirstAvailableOption() {
     String size = '';
     String color = '';
-    var sizeOptions = productDetailData!.option
+    var sizeOptions = productDetailData!.options
         .where((element) => element.name.toLowerCase() == "size")
         .first
         .values;
-    var colorOptions = productDetailData!.option
+    var colorOptions = productDetailData!.options
         .where((element) => element.name.toLowerCase() == "color")
         .first
         .values;

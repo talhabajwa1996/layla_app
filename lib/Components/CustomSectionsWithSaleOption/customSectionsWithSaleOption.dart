@@ -26,7 +26,7 @@ class CustomSectionsWithSaleOption extends StatefulWidget {
 
 class _CustomSectionsWithSaleOptionState extends State<CustomSectionsWithSaleOption> {
 
-  final CarouselController carouselController = CarouselController();
+  final CarouselSliderController carouselController = CarouselSliderController();
   int currentIndex = 0;
 
   @override

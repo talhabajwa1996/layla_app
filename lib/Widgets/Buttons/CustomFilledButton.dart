@@ -60,7 +60,7 @@ class CustomFilledButton extends StatelessWidget {
             ? ElevatedButton(
           style: ElevatedButton.styleFrom(
                   alignment: Alignment.center,
-                  primary: btnColor ?? ColorConstants.transparent,
+                  // primary: btnColor ?? ColorConstants.transparent,
                   side: BorderSide(color: borderColor ?? ColorConstants.transparent),
                   elevation: 0,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(btnRadius ?? 5.r)),
@@ -88,7 +88,7 @@ class CustomFilledButton extends StatelessWidget {
               )
             : ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
-                  primary: btnColor ?? ColorConstants.transparent,
+                  // primary: btnColor ?? ColorConstants.transparent,
                   side: BorderSide(color: borderColor ?? ColorConstants.transparent),
                   elevation: 0,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(btnRadius ?? 30)),
